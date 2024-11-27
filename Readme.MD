@@ -18,14 +18,14 @@ Este sistema visa maximizar o lucro de uma sorveteria utilizando **programação
 - `result.html`: Mostra os resultados da operação.
 
 ## Como rodar
-- 1. Clone o repositório
+- Clone o repositório
 
-- 2. Crie um ambiente virtual e ative:
-* python3 -m venv venv 
-* source venv/bin/activate
+- Crie um ambiente virtual e ative:
+** python3 -m venv venv **
+** source venv/bin/activate **
 
-- 3. Instale as dependências:
-* pip install -r requirements.txt
+- Instale as dependências:
+** pip install -r requirements.txt **
 
-- 4. Inicie o servidor no terminal do vsCode:
-* python app.py
+- Inicie o servidor no terminal do vsCode:
+** python app.py **
