@@ -17,17 +17,16 @@ Este sistema visa maximizar o lucro de uma sorveteria utilizando **programação
 - `restrictions.html`: Define os valores das variáveis de decisão e restrições.
 - `result.html`: Mostra os resultados da operação.
 
-## Como rodar
-- Clone o repositório
+## Como rodar (abra o terminal na pasta do projeto)
+**1. Clone o repositório:**
+- git clone <url>
 
-**1. Crie um ambiente virtual e ative:**
+**2. Crie um ambiente virtual e ative:**
 - python3 -m venv venv 
 - source venv/bin/activate
 
-**2. Instale as dependências:**
+**3. Instale as dependências:**
 - pip install -r requirements.txt
 
-**3. Inicie o servidor no terminal do vsCode:** 
+**4. Inicie o servidor no terminal do vsCode:** 
 - python app.py 
-
-
