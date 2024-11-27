@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximizar Lucro</title>
+</head>
+<body>
+    <h1>Informe os tipos de Variáveis de Decisão e Restrições</h1>
+    <form action="/restrictions" method="POST">
+        <input type="hidden" name="num_variables" value="{{ num_variables }}">
+        <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
+
+        <h2>Variáveis de Decisão</h2>
+        {% for i in range(num_variables) %}
+            <label for="var{{ i }}">Nome da Variável x{{ i+1 }}: </label>
+            <input type="text" name="var{{ i }}" id="var{{ i }}" required><br><br>
+        {% endfor %}
+
+        <h2>Restrições</h2>
+        {% for i in range(num_constraints) %}
+            <label for="constraint{{ i }}">Nome da Restrição {{ i+1 }}: </label>
+            <input type="text" name="constraint{{ i }}" id="constraint{{ i }}" required><br><br>
+        {% endfor %}
+        <button type="submit">Continuar</button>
+    </form>
+</body>
+</html>

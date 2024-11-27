@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+</head>
+<body>
+    <h1>Resultados da Otimização</h1>
+
+    {% if mensagem %}
+        <h2>{{ mensagem }}</h2>
+    {% else %}
+        <h2>Lucro Máximo: R$ {{ lucro | round(2) }}</h2>
+        <h3>Produção Otimizada:</h3>
+        <ul>
+        {% for i in range(num_variables) %}
+            <li>{{ variables[i] }}: {{ quantidades[i] }} unidades (Valor Unitário: R$ {{ valores_unitarios[i] }})</li>
+        {% endfor %}
+        </ul>
+
+        <h3>Utilização de Recursos (Restrições):</h3>
+        <ul>
+        {% for i in range(num_constraints) %}
+            <li>{{ constraints[i] }}: {{ usado_restricoes[i] }} (Disponível: {{ available[i] }})</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>

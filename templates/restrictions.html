@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximizar Lucro</title>
+</head>
+<body>
+    <h1>Insira os Valores das Restrições</h1>
+    <form action="/calculate" method="POST">
+        <input type="hidden" name="num_variables" value="{{ num_variables }}">
+        <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
+
+        <!-- Adicionar os nomes como campos ocultos -->
+        {% for i in range(num_variables) %}
+        <input type="hidden" name="var{{ i }}" value="{{ variable_names[i] }}">
+        {% endfor %}
+        {% for i in range(num_constraints) %}
+        <input type="hidden" name="constraint{{ i }}" value="{{ constraints[i] }}">
+        {% endfor %}
+
+        {% for i in range(num_constraints) %}
+        <h3>Restrição {{ loop.index }}: {{ constraints[loop.index0] }}</h3>
+        <label for="available{{ i }}">Quantidade disponível: </label>
+        <input type="number" name="available{{ i }}" id="available{{ i }}" step="any" required><br><br>
+
+        {% for j in range(num_variables) %}
+            <label for="required_x{{ j+1 }}_{{ i }}">Necessário para {{ variable_names[j] }}: </label>
+            <input type="number" name="required_x{{ j+1 }}_{{ i }}" id="required_x{{ j+1 }}_{{ i }}" step="any" required><br><br>
+        {% endfor %}
+        {% endfor %}
+
+        <h3>Definir Valor Unitário para cada Variável de Decisão</h3>
+        {% for j in range(num_variables) %}
+        <label for="value_x{{ j+1 }}">Valor Unitário de {{ variable_names[j] }}: </label>
+        <input type="number" name="value_x{{ j+1 }}" id="value_x{{ j+1 }}" step="any" required><br><br>
+        {% endfor %}
+
+        <button type="submit">Calcular</button>
+    </form>
+</body>
+</html>
