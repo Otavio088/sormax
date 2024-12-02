@@ -4,21 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maximizar Lucro</title>
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-    <div>
-        <h1>Quantidade para Maximização</h1>
-        <form action="/optimize" method="POST">
-            <div>
-                <label for="num_variables">Número de Variáveis de Decisão:</label>
-                <input type="number" id="num_variables" name="num_variables" required>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="logo">
+                <!-- Caminho para a logo -->
+                <img src="../static/img/LOGOSORVETE.png" alt="Logo Sorvetes Mococa">
+                <h2>Sorvetes Mococa</h2>
             </div>
-            <div>
-                <label for="num_constraints">Número de Restrições:</label>
-                <input type="number" id="num_constraints" name="num_constraints" required>
+            <nav class="menu">
+                <a href="#">Inicio</a>
+                <a href="#">Gráficos</a>
+                
+            </nav>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="content">
+            <div class="form-container">
+                <header class="form-header">
+                    <!-- Cabeçalho azul acima do formulário -->
+                    <div class="header-bar">
+                        <h1>Quantidade para Maximização</h1>
+                    </div>
+                </header>
+                <form action="/optimize" method="POST">
+                    <div class="form-group">
+                        <label for="num_variables">Número de Variáveis de Decisão:</label>
+                        <input type="number" id="num_variables" name="num_variables" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_constraints">Número de Restrições:</label>
+                        <input type="number" id="num_constraints" name="num_constraints" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit">Continuar</button>
+                    </div>
+                </form>
             </div>
-            <button type="submit">Continuar</button>
-        </form>
+        </main>
     </div>
 </body>
 </html>

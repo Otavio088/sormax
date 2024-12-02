@@ -1,0 +1,175 @@
+/* Container principal */
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%; /* Garante que ocupe toda a largura da tela */
+}
+
+/* Barra lateral */
+.sidebar {
+    background-color: #024796;
+    color: white;
+    width: 250px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed; /* Fixar a sidebar na lateral */
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+/* Logo e menu na sidebar */
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.menu a {
+    display: block;
+    text-align: center;
+    padding: 20px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: #02316a;
+    text-decoration: none;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.menu a:hover {
+    background-color: #021f4a;
+}
+
+/* Conteúdo principal */
+.content {
+    flex: 1;
+    padding: 20px;
+    margin-left: 250px; /* Compensa a largura da sidebar */
+    background: url('../imagens/background.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+/* Camada de fundo com transparência */
+.content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85); /* Transparência */
+    z-index: -1;
+}
+
+/* Formulário */
+.form-container {
+    width: 100%;
+    max-width: 900px; /* Aumentado para preencher mais da tela */
+    min-height: 600px; /* Aumentado a altura mínima */
+    background-color: #ffeb99;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.header-bar {
+    background-color: #024796;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    width: 95%;
+}
+
+.header-bar h1 {
+    font-size: 24px;
+    color: white;
+    margin: 0;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0px 0px 4px #024796;
+    padding: 10px;
+    background-color: #024796;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: #024796;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #02316a;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Espaço entre os grupos */
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0px 0px 4px #024796;
+    padding: 10px;
+    background-color: #024796;
+    border-radius: 10px;
+    text-align: center;
+    width: 95%;
+}
+
+.form-group input {
+    width: 95%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: white;
+}
