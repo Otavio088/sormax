@@ -25,7 +25,8 @@ Este sistema visa maximizar o lucro de uma sorveteria utilizando **programação
 
 **2. Crie um ambiente virtual e ative:**
 - python3 -m venv venv 
-- source venv/bin/activate
+- source venv/bin/activate (linux)
+- venv\Scripts\activate (windows)
 
 **3. Instale as dependências:**
 - pip install -r requirements.txt
