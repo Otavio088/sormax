@@ -1,7 +1,16 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import pulp
+import matplotlib.pyplot as plt
+import io
+import base64
 
 app = Flask(__name__)
+
+# Chave Teste
+app.secret_key = "chave_teste"
+
+# Variável global para armazenar os resultados
+cumulative_results = []
 
 @app.route('/')
 def home():
@@ -33,8 +42,15 @@ def restrictions_post():
         constraints=constraint_names       # constraints pode ser o mesmo que constraint_names
     )
 
-@app.route('/calculate', methods=['POST'])
+@app.route('/calculate', methods=['GET', 'POST'])
 def calculate():
+    if request.method == 'GET':
+        # Verifique se há resultados salvos na sessão
+        if 'last_results' in session:
+            return render_template('result.html', **session['last_results'])
+        else:
+            return render_template('result.html', mensagem="Nenhum resultado disponível.")
+
     data = request.form.to_dict()
     print(f"Dados recebidos: {data}")
 
@@ -94,6 +110,26 @@ def calculate():
         for i in range(num_constraints)
     ]
 
+    # Armazena os resultados para o gráfico
+    cumulative_results.append({
+        "execucao": len(cumulative_results) + 1,
+        "lucro": max_profit,
+        "quantidades": quantities,
+        "variaveis": variable_names
+    })
+
+    session['last_results'] = {
+        'lucro': max_profit,
+        'quantidades': quantities,
+        'valores_unitarios': valores_unitarios,
+        'usado_restricoes': used_constraints,
+        'available': available,
+        'num_constraints': num_constraints,
+        'num_variables': num_variables,
+        'variables': variable_names,
+        'constraints': constraint_names
+    }
+
     return render_template(
         'result.html',
         lucro=max_profit,
@@ -107,5 +143,44 @@ def calculate():
         constraints=constraint_names  # Passar os nomes das restrições
     )
 
+@app.route('/graph')
+def graph():
+    if not cumulative_results:
+        return render_template('graph.html', mensagem="Nenhum dado disponível para gerar o gráfico.")
+    
+    # Obtém o último resultado armazenado
+    last_result = cumulative_results[-1]
+    variables = last_result["variaveis"]
+    quantities = last_result["quantidades"]
+    lucro = last_result["lucro"]
+
+    # Cria os dados para o gráfico de pizza
+    data = quantities
+    labels = variables
+
+    # Gera o gráfico de pizza
+    plt.figure(figsize=(8, 8))
+    plt.pie(
+        data,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=90,
+        pctdistance=0.85,
+        colors=plt.cm.tab20.colors[:len(labels)]
+    )
+    plt.title("Distribuição de Produção - Lucro Total: R$ {:.2f}".format(lucro), pad=20)
+    plt.axis('equal')  # Garante que o gráfico seja um círculo perfeito
+
+    # Salva o gráfico em base64 para exibir no HTML
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    graph_url = base64.b64encode(img.getvalue()).decode()
+    plt.close()
+
+    return render_template('graph.html', graph_url=graph_url)
+
+
+    
 if __name__ == '__main__':
     app.run(debug=True)

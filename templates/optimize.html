@@ -4,25 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maximizar Lucro</title>
+    <link rel="stylesheet" href="../static/style.css"> <!-- Certifique-se do caminho correto -->
+    <link rel="icon" href="/static/img/LOGOSORVETE.png">
 </head>
 <body>
-    <h1>Informe os tipos de Variáveis de Decisão e Restrições</h1>
-    <form action="/restrictions" method="POST">
-        <input type="hidden" name="num_variables" value="{{ num_variables }}">
-        <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../static/img/LOGOSORVETE.png" alt="Logo Sorvetes Mococa">
+                <h2>Sorvetes Mococa</h2>
+            </div>
+            <nav class="menu">
+                <a href="/">Inicio</a>
+                <a href="/graph">Gráfico</a>
+            </nav>
+        </aside>
 
-        <h2>Variáveis de Decisão</h2>
-        {% for i in range(num_variables) %}
-            <label for="var{{ i }}">Nome da Variável x{{ i+1 }}: </label>
-            <input type="text" name="var{{ i }}" id="var{{ i }}" required><br><br>
-        {% endfor %}
+        <!-- Conteúdo principal -->
+        <main class="content">
+            
+            
+            <!-- Formulário -->
+            <div class="form-container">
+                <h1 class="screen-title">Informe os tipos de Produtos e Restrições</h1>
+                <form action="/restrictions" method="POST">
+                    <!-- Inputs ocultos -->
+                    <input type="hidden" name="num_variables" value="{{ num_variables }}">
+                    <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
 
-        <h2>Restrições</h2>
-        {% for i in range(num_constraints) %}
-            <label for="constraint{{ i }}">Nome da Restrição {{ i+1 }}: </label>
-            <input type="text" name="constraint{{ i }}" id="constraint{{ i }}" required><br><br>
-        {% endfor %}
-        <button type="submit">Continuar</button>
-    </form>
+                    <!-- Seção: Variáveis de Decisão -->
+                    <div class="form-group">
+                        <h2 class="screen-title">Produtos</h2>
+                        {% for i in range(num_variables) %}
+                            <label for="var{{ i }}">Nome do Produto x{{ i+1 }}:</label>
+                            <input type="text" name="var{{ i }}" id="var{{ i }}" required>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Seção: Restrições -->
+                    <div class="form-group">
+                        <h2 class="screen-title">Restrições</h2>
+                        {% for i in range(num_constraints) %}
+                            <label for="constraint{{ i }}">Nome da Restrição {{ i+1 }}:</label>
+                            <input type="text" name="constraint{{ i }}" id="constraint{{ i }}" required>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Botão -->
+                    <div class="form-buttons">
+                        <button type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

@@ -16,10 +16,12 @@ Este sistema visa maximizar o lucro de uma sorveteria utilizando **programação
 - `optimize.html`: Pede os nomes das variáveis de decisão e restrições.
 - `restrictions.html`: Define os valores das variáveis de decisão e restrições.
 - `result.html`: Mostra os resultados da operação.
+- `graph.html`: Mostra grafico com base no resultado.
+- `style.css`: Todo o estilo css para o projeto.
 
 ## Como rodar (abra o terminal na pasta do projeto)
 **1. Clone o repositório:**
-- git clone <url>
+- git clone (url)
 
 **2. Crie um ambiente virtual e ative:**
 - python3 -m venv venv 

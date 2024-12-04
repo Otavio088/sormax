@@ -1,3 +1,7 @@
+body {
+    background-color: #ffeb99;
+}
+
 /* Container principal */
 .container {
     display: flex;
@@ -15,7 +19,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     position: fixed; /* Fixar a sidebar na lateral */
     height: 100vh;
     top: 0;
@@ -36,7 +39,7 @@
 .menu a {
     display: block;
     text-align: center;
-    padding: 20px 30px;
+    padding: 15px;
     font-size: 18px;
     color: white;
     background-color: #02316a;
@@ -55,80 +58,73 @@
     flex: 1;
     padding: 20px;
     margin-left: 250px; /* Compensa a largura da sidebar */
-    background: url('../imagens/background.jpg') no-repeat center center;
-    background-size: cover;
-    position: relative;
+    background-color: #ffeb99;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Espaço ajustado */
 }
 
-/* Camada de fundo com transparência */
-.content::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.85); /* Transparência */
-    z-index: -1;
+/* Título da tela */
+.screen-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #024796;
+    margin: 20px 0;
+    text-align: center;
 }
 
 /* Formulário */
 .form-container {
-    width: 100%;
-    max-width: 900px; /* Aumentado para preencher mais da tela */
-    min-height: 600px; /* Aumentado a altura mínima */
-    background-color: #ffeb99;
+    width: 50%;
+    background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin: auto;
+    align-items: center;
+    max-height: 70vh; /* Limita a altura a 70% da altura da tela */
+    overflow-y: auto; /* Habilita a rolagem vertical */
+    scrollbar-width: thin; /* (Opcional) Ajusta o estilo da barra de rolagem */
+}
+.form-container::-webkit-scrollbar {
+    width: 8px; /* Largura da barra de rolagem */
 }
 
-.header-bar {
-    background-color: #024796;
-    padding: 20px;
-    border-radius: 10px 10px 0 0;
-    text-align: center;
-    width: 95%;
+.form-container::-webkit-scrollbar-thumb {
+    background-color: #024796; /* Cor do "polegar" da barra */
+    border-radius: 10px;
 }
 
-.header-bar h1 {
-    font-size: 24px;
-    color: white;
-    margin: 0;
+.form-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Cor do fundo da barra */
 }
 
-label {
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group label {
     display: block;
     font-size: 16px;
-    color: #ffffff;
+    color: #024796;
     font-weight: bold;
     margin-bottom: 10px;
-    text-shadow: 0px 0px 4px #024796;
-    padding: 10px;
-    background-color: #024796;
-    border-radius: 10px;
-    text-align: center;
-    width: 100%;
+    padding-top: 10px;
 }
 
-input {
+.form-group input {
     width: 100%;
     padding: 15px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px;
 }
 
 .form-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+    margin-top: 20px;
 }
 
 button {
@@ -145,31 +141,93 @@ button {
 button:hover {
     background-color: #02316a;
 }
-
-.form-group {
-    margin-bottom: 20px; /* Espaço entre os grupos */
+.screen-title {
+    display: block; /* Garante que o elemento ocupe toda a largura disponível */
+    font-size: 24px; /* Tamanho da fonte */
+    font-weight: bold; /* Destaca o texto */
+    color: white; /* Texto em branco */
+    background-color: #024796; /* Fundo azul */
+    padding: 15px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    text-align: center; /* Centraliza o texto */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* Sombra no texto */
+    margin: 0 auto 20px; /* Alinha com o formulário */
+    width: 95%; /* Largura ajustada para alinhar com os inputs */
 }
 
-.form-group label {
+
+.screen-title::after {
+    content: ""; /* Elemento decorativo abaixo */
+    display: block; /* Faz a linha ser exibida */
+    width: 50%; /* Define o tamanho da linha */
+    height: 3px; /* Altura da linha */
+    background-color: #02316a; /* Cor azul mais escura */
+    margin: 10px auto; /* Centraliza a linha */
+    border-radius: 2px; /* Deixa a linha arredondada */
+}
+
+/* Estilização geral para as listas de resultados */
+.result-list {
+    list-style: none; /* Remove os marcadores padrão */
+    padding: 0;
+    margin: 1rem 0; /* Espaçamento entre as listas */
+}
+
+.result-item {
+    margin: 0.5rem 0; /* Espaçamento entre itens */
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd; /* Linha separando os itens */
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre textos */
+    align-items: center; /* Alinhamento vertical */
+}
+
+/* Destaque para os nomes das variáveis e valores */
+.result-variable {
+    font-weight: bold; /* Negrito para os nomes */
+    color: #2a7ae2; /* Azul (ou cor principal do seu projeto) */
+}
+
+.result-value {
+    font-size: 1rem; /* Tamanho consistente */
+    color: #333; /* Cor neutra */
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 700px; /* Ajuste conforme necessário */
+    margin: 0 auto;
+    padding: 10px; /* Adiciona um pouco de espaçamento interno */
+    background-color: #fff; /* Fundo branco para destacar o gráfico */
+    border-radius: 8px; /* Deixa as bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona sombra para destaque */
+}
+
+.chart-container img {
+    max-width: 100%;
+    height: auto;
     display: block;
-    font-size: 16px;
-    color: #ffffff;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-shadow: 0px 0px 4px #024796;
-    padding: 10px;
-    background-color: #024796;
-    border-radius: 10px;
-    text-align: center;
-    width: 95%;
+    margin: 0 auto;
 }
 
-.form-group input {
-    width: 95%;
-    padding: 15px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    background-color: white;
+
+.message {
+    font-size: 1.2rem;
+    color: #e63946; /* Vermelho ou cor de destaque para mensagens */
+    margin: 1rem 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #2a7ae2; /* Azul do seu padrão */
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #1a5ebd; /* Tom mais escuro para hover */
 }

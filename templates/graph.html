@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Lucro</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="icon" href="/static/img/LOGOSORVETE.png">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../static/img/LOGOSORVETE.png" alt="Logo Sorvetes Mococa">
+                <h2>Sorvetes Mococa</h2>
+            </div>
+            <nav class="menu">
+                <a href="/">Inicio</a>
+                <a href="/calculate" class="button">Resultados</a>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="content">
+            <div class="form-container">
+                <h1 class="screen-title">Gráfico de Maximização de Lucro</h1>
+
+                {% if mensagem %}
+                    <p class="message">{{ mensagem }}</p>
+                {% else %}
+                    <div class="chart-container">
+                        <img src="data:image/png;base64,{{ graph_url }}" alt="Gráfico de Lucro">
+                    </div>
+                {% endif %}
+
+                <div class="form-buttons">
+                    <a href="/" class="btn">Voltar para o início</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

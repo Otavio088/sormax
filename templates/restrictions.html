@@ -4,39 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maximizar Lucro</title>
+    <link rel="stylesheet" href="../static/style.css"> 
+    <link rel="icon" href="/static/img/LOGOSORVETE.png">
 </head>
 <body>
-    <h1>Insira os Valores das Restrições</h1>
-    <form action="/calculate" method="POST">
-        <input type="hidden" name="num_variables" value="{{ num_variables }}">
-        <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../static/img/LOGOSORVETE.png" alt="Logo Sorvetes Mococa">
+                <h2>Sorvetes Mococa</h2>
+            </div>
+            <nav class="menu">
+                <a href="/">Inicio</a>
+                <a href="/graph">Gráfico</a>
+            </nav>
+        </aside>
 
-        <!-- Adicionar os nomes como campos ocultos -->
-        {% for i in range(num_variables) %}
-        <input type="hidden" name="var{{ i }}" value="{{ variable_names[i] }}">
-        {% endfor %}
-        {% for i in range(num_constraints) %}
-        <input type="hidden" name="constraint{{ i }}" value="{{ constraints[i] }}">
-        {% endfor %}
+        <!-- Conteúdo principal -->
+        <main class="content">
+            <!-- Formulário -->
+            <div class="form-container">
+                <h1 class="screen-title">Insira os Valores das Restrições</h1>
+                <form action="/calculate" method="POST">
+                    <!-- Inputs ocultos -->
+                    <input type="hidden" name="num_variables" value="{{ num_variables }}">
+                    <input type="hidden" name="num_constraints" value="{{ num_constraints }}">
 
-        {% for i in range(num_constraints) %}
-        <h3>Restrição {{ loop.index }}: {{ constraints[loop.index0] }}</h3>
-        <label for="available{{ i }}">Quantidade disponível: </label>
-        <input type="number" name="available{{ i }}" id="available{{ i }}" step="any" required><br><br>
+                    <!-- Adicionar os nomes como campos ocultos -->
+                    {% for i in range(num_variables) %}
+                    <input type="hidden" name="var{{ i }}" value="{{ variable_names[i] }}">
+                    {% endfor %}
+                    {% for i in range(num_constraints) %}
+                    <input type="hidden" name="constraint{{ i }}" value="{{ constraints[i] }}">
+                    {% endfor %}
 
-        {% for j in range(num_variables) %}
-            <label for="required_x{{ j+1 }}_{{ i }}">Necessário para {{ variable_names[j] }}: </label>
-            <input type="number" name="required_x{{ j+1 }}_{{ i }}" id="required_x{{ j+1 }}_{{ i }}" step="any" required><br><br>
-        {% endfor %}
-        {% endfor %}
+                    <!-- Seção: Restrições -->
+                    {% for i in range(num_constraints) %}
+                    <div class="form-group">
+                        <h2 class="screen-title">Restrição {{ loop.index }}: {{ constraints[loop.index0] }}</h2>
+                        <label for="available{{ i }}">Quantidade disponível:</label>
+                        <input type="number" name="available{{ i }}" id="available{{ i }}" step="any" required>
 
-        <h3>Definir Valor Unitário para cada Variável de Decisão</h3>
-        {% for j in range(num_variables) %}
-        <label for="value_x{{ j+1 }}">Valor Unitário de {{ variable_names[j] }}: </label>
-        <input type="number" name="value_x{{ j+1 }}" id="value_x{{ j+1 }}" step="any" required><br><br>
-        {% endfor %}
+                        {% for j in range(num_variables) %}
+                            <label for="required_x{{ j+1 }}_{{ i }}">Necessário para {{ variable_names[j] }}:</label>
+                            <input type="number" name="required_x{{ j+1 }}_{{ i }}" id="required_x{{ j+1 }}_{{ i }}" step="any" required>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
 
-        <button type="submit">Calcular</button>
-    </form>
+                    <!-- Seção: Valor Unitário -->
+                    <div class="form-group">
+                        <h2 class="screen-title">Definir Valor Unitário para cada Variável de Decisão</h2>
+                        {% for j in range(num_variables) %}
+                            <label for="value_x{{ j+1 }}">Valor Unitário de {{ variable_names[j] }}:</label>
+                            <input type="number" name="value_x{{ j+1 }}" id="value_x{{ j+1 }}" step="any" required>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Botão -->
+                    <div class="form-buttons">
+                        <button type="submit">Calcular</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
