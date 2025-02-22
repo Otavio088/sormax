@@ -1,0 +1,5 @@
+[flask]
+secret_key = "${SECRET_KEY}"
+
+[database]
+uri = "${DATABASE_URI}"

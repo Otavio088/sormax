@@ -1,0 +1,64 @@
+aside {
+    background-color: #024796;
+    color: white;
+    width: 250px;
+    padding:30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+aside img {
+    width: 100px;
+}
+
+aside h2 {
+    font-size: 25px;
+    font-weight: bold;
+    white-space: nowrap;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+li, form {
+    width: 100%;
+}
+
+li a {
+    display: block;
+}
+
+button {
+    background-color: #012151;
+    color: #fff;
+    display: inline-block;
+    font-size: 22px;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.01);
+}
+
+#btn-leave {
+    background-color: #510D01;
+}  

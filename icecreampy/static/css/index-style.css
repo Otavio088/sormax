@@ -1,0 +1,108 @@
+body {
+    background-color: #78a7d3;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", serif;
+    font-size: 14px;
+    text-shadow: #242323c9 2px 3px 2px;
+}
+
+.box-login, .box-register {
+    background-color: #024796;
+    width: 25%;
+    height: 75%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 2px 2px 2px #242323c9;
+}
+
+.box-register  {
+    display: none;
+}
+
+.box-login #alert, .box-register #alert{
+    color: #ff0000;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.box-login h1, .box-register h1 {
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.box-login .content, .box-register .content {
+    width: 92%;
+}
+
+.content form {
+    width: 100%;
+}
+
+form div {
+    padding-top: 12px;
+}
+
+form #username, #password, #passwordconfirm, #email {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 2px;
+    margin-top: 5px;
+    outline: none;
+    box-shadow: 2px 1px 1px 1px #242323c9;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+}
+
+form #username:focus, #password:focus, #passwordconfirm:focus, #email:focus {
+    box-shadow: 0 0 0 3px #fff;
+}
+
+form #btn-submit, #btn-register {
+    background-color: #005cb2;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 2px 1px 1px 1px #242323c9;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+form #btn-submit:hover, #btn-register:hover {
+    background-color: #fff;
+    color: #005cb2;
+}
+
+.div-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.div-links a {
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    margin: 4px;
+}
+
+.div-links a:hover {
+    color: #4298e7;
+    border-bottom: 1px solid #4298e7;
+    margin: 4px;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/aside.css">
+    <link rel="icon" href="/static/img/icon-icecream.png">
+</head>
+<body>
+    <aside>
+        <img src="/static/img/icon-icecream.png" alt="Logo Sorveteria">
+        <h2>Sorveteria da Praça</h2>
+        <nav>
+            <ul>
+                <li>
+                    <form action="/quantity" method="POST">
+                        <button type="submit" name="optimization_type" value="maximization">Maximização</button>
+                    </form>
+                </li>
+                <li>
+                    <form action="/quantity" method="POST">
+                        <button type="submit" name="optimization_type" value="minimization">Minimização</button>
+                    </form>
+                </li>
+                <li>
+                    <a href="/consult">
+                        <button>Consultas</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <button id="btn-leave">Sair</button>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+</body>
+</html>

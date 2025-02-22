@@ -1,4 +1,16 @@
+# Ambiente virtual
 venv/
+*/venv/
+
+# Cache do Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configurações do VSCode e PyCharm
 .vscode/
 .idea/
+
+# Arquivos de configurações sensíveis
+.env

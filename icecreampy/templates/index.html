@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/index-style.css">
+    <link rel="icon" href="/static/img/icon-icecream.png">
+</head>
+<body>
+    <div class="box-login">
+        {% set msg = get_flashed_messages() %}
+        {% if msg %}
+            <div id="alert">
+                {{ msg[0] }}
+            </div>
+        {% endif %}
+        <h1>Bem-Vindo</h1>
+        <div class="content">
+            <form action="/autentication" method="POST">
+                <div>
+                    <label for="username">Usuário:</label>
+                    <input type="text" name="username" id="username" placeholder="usuário..." required>
+                </div>
+                <div>
+                    <label for="password">Senha:</label>
+                    <input type="password" name="password" id="password" placeholder="senha..." required>
+                </div>
+                <div>
+                    <input type="submit" id="btn-submit" value="Entrar">
+                </div>
+                <div class="div-links">
+                    <a href="">Esqueci minha senha</a>
+                    <a href="">Cadastrar novo usuário</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="box-register">
+        {% set msg = get_flashed_messages() %}
+        {% if msg %}
+            <div id="alert">
+                {{ msg[0] }}
+            </div>
+        {% endif %}
+        <h1>Cadastro</h1>
+        <div class="content">
+            <form action="/validation_register" method="POST">
+                <div>
+                    <label for="username">Usuário:</label>
+                    <input type="text" name="username" id="username" placeholder="usuário..." required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" placeholder="email..." required>
+                </div>
+                <div>
+                    <label for="password">Senha:</label>
+                    <input type="password" name="password" id="password" placeholder="senha..." required>
+                </div>
+                <div>
+                    <label for="passwordconfirm">Confirme a senha:</label>
+                    <input type="passwordconfirm" name="passwordconfirm" id="passwordconfirm" placeholder="senha..." required>
+                </div>
+                <div>
+                    <input type="submit" id="btn-register" value="Cadastrar">
+                </div>
+                <div class="div-links">
+                    <a href="/">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
