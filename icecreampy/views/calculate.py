@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, redirect
 import pulp
 
 bp = Blueprint('result', __name__)
@@ -69,6 +69,7 @@ def calculate():
                 round(variable_prices[i] * quantities[i], 2) for i in range(session['num_variables'])
             ]
 
+            costs_variables = []
 
             # Salvar os resultados na sessão
             session['max_profit'] = max_profit
@@ -155,8 +156,13 @@ def calculate():
 
             # Preparar os dados para o gráfico
             chart_data = min_production
+        
+    if not session.get('variable_prices'):
+        return redirect('/values')
 
-            return render_template(
-                'result.html',
-                chart_data=chart_data
-            )
+    print('session: ', session)
+
+    return render_template(
+        'result.html',
+        chart_data=chart_data
+    )

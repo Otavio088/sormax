@@ -21,11 +21,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/consult">
-                        <button>Consultas</button>
-                    </a>
-                </li>
-                <li>
                     <a href="/logout">
                         <button id="btn-leave">Sair</button>
                     </a>
@@ -59,7 +54,7 @@
                 {% for i in range(session.num_restrictions)%}
                     <div class="restrictions-values">
                         <h3>{{ session.restriction_names[i] }}</h3>
-                        <select name="type_y{{ i }}" id="type_y{{ i }}">
+                        <select name="type_y{{ i }}" id="type_y{{ i }}" required>
                             <option value="">Selecione...</option>
                             <option value="unidade">Unidade</option>
                             <option value="L">Litro</option>
@@ -70,12 +65,12 @@
                         </select>
                         <div>
                             <label for="available_quantity_y{{ i }}">Quantidade disponível:</label>
-                            <input type="text" name="available_quantity_y{{ i }}" id="available_quantity_y{{ i }}">
+                            <input type="text" name="available_quantity_y{{ i }}" id="available_quantity_y{{ i }}" required>
                         </div>
                         {% for j in range(session.num_variables) %}
                             <div>
                                 <label for="necessary_y{{ i }}_for_x{{ j }}">Necessário para {{ session.variable_names[j] }}:</label>
-                                <input type="text" name="necessary_y{{ i }}_for_x{{ j }}" id="necessary_y{{ i }}_for_x{{ j }}">
+                                <input type="text" name="necessary_y{{ i }}_for_x{{ j }}" id="necessary_y{{ i }}_for_x{{ j }}" required>
                             </div>
                         {% endfor %}
                     </div>
