@@ -2,7 +2,7 @@ from flask import Flask
 import os, toml
 from dotenv import load_dotenv
 from icecreampy.ext import database
-from icecreampy.views import index, autentication, logout, home, quantity, names, values, calculate
+from icecreampy.views import index, autentication, user_registration, home, quantity, names, values, calculate
 
 load_dotenv()
 config = toml.load('settings.toml')
@@ -15,7 +15,7 @@ database.init_app(app, config)
 
 app.register_blueprint(index.bp)
 app.register_blueprint(autentication.bp)
-app.register_blueprint(logout.bp)
+app.register_blueprint(user_registration.bp)
 app.register_blueprint(home.bp)
 app.register_blueprint(quantity.bp)
 app.register_blueprint(names.bp)

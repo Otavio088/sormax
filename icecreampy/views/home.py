@@ -11,8 +11,9 @@ def home():
 
     session_keys = list(session.keys())
 
-    for key in session_keys:
-        if key not in keep_keys:
-            session.pop(key)
+    if (len(session_keys) > 3):
+        for key in session_keys:
+            if key not in keep_keys:
+                session.pop(key) # remove só os dados da sessão que não são loggedin, id e username
 
     return render_template('home.html')

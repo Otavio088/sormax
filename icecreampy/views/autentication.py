@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, session, flash
+from flask import Blueprint, request, redirect, session, flash
 from icecreampy.models.accounts import accounts
-from icecreampy.ext.database import db
 import hashlib
 
 bp = Blueprint('autentication', __name__)
@@ -15,6 +14,8 @@ def validation():
 
         user = accounts.query.filter_by(username = username, password = hash).first()
 
+        print('user: ', user)
+        
         if user:
             session['loggedin'] = True
             session['id'] = user.id
@@ -23,4 +24,11 @@ def validation():
             return redirect('/home')
 
         flash('Usuário ou senha incorretos!')
-        return redirect('/')
+
+    return redirect('/')
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+
+    return redirect('/')
