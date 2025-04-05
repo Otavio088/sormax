@@ -44,6 +44,8 @@ table {
 
 * {
 	box-sizing: border-box;
+	font-family: "Roboto", serif;
+    font-size: 14px;
 }
 
 body {

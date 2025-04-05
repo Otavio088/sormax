@@ -6,12 +6,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: "Roboto", serif;
-    font-size: 14px;
     text-shadow: #242323c9 2px 3px 2px;
 }
 
-.box-login, .box-register {
+.box-login {
     background-color: #024796;
     width: 25%;
     height: 75%;
@@ -24,23 +22,19 @@ body {
     box-shadow: 3px 2px 2px 2px #242323c9;
 }
 
-.box-register  {
-    display: none;
-}
-
-.box-login #alert, .box-register #alert{
+.box-login #alert{
     color: #ff0000;
     font-size: 18px;
     font-weight: bold;
 }
 
-.box-login h1, .box-register h1 {
+.box-login h1 {
     text-align: center;
     font-size: 45px;
     font-weight: bold;
 }
 
-.box-login .content, .box-register .content {
+.box-login .content {
     width: 92%;
 }
 
@@ -52,7 +46,7 @@ form div {
     padding-top: 12px;
 }
 
-form #username, #password, #passwordconfirm, #email {
+form #username, #password {
     width: 100%;
     padding: 8px;
     border: none;
@@ -64,11 +58,11 @@ form #username, #password, #passwordconfirm, #email {
     transition: box-shadow 0.3s ease;
 }
 
-form #username:focus, #password:focus, #passwordconfirm:focus, #email:focus {
+form #username:focus, #password:focus {
     box-shadow: 0 0 0 3px #fff;
 }
 
-form #btn-submit, #btn-register {
+form #btn-submit {
     background-color: #005cb2;
     color: white;
     padding: 8px;
@@ -84,7 +78,7 @@ form #btn-submit, #btn-register {
     transition: background-color 0.3s ease-in-out;
 }
 
-form #btn-submit:hover, #btn-register:hover {
+form #btn-submit:hover {
     background-color: #fff;
     color: #005cb2;
 }

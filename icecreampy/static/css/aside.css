@@ -40,7 +40,8 @@ li a {
     display: block;
 }
 
-button {
+button, a {
+    text-align: center;
     background-color: #012151;
     color: #fff;
     display: inline-block;
@@ -55,7 +56,7 @@ button {
     transition: transform 0.2s ease;
 }
 
-button:hover {
+button:hover, a:hover {
     transform: scale(1.01);
 }
 
