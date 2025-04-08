@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Cadastro</title>
     <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/home.css">
     <link rel="stylesheet" href="/static/css/aside.css">
     <link rel="icon" href="/static/img/icon-icecream.png">
 </head>
@@ -16,6 +15,11 @@
         <nav>
             <ul>
                 <li>
+                    <a class="btn-aside" href="/home">
+                        Início
+                    </a>
+                </li>
+                <li>
                     <form action="/quantity" method="POST">
                         <button class="btn-aside" type="submit" name="optimization_type" value="maximization">Maximização</button>
                     </form>
@@ -25,11 +29,6 @@
                         <button class="btn-aside" type="submit" name="optimization_type" value="minimization">Minimização</button>
                     </form>
                 </li> -->
-                <li>
-                    <a class="btn-aside" href="/register-products">
-                        Cadastro
-                    </a>
-                </li>
                 <li>
                     <a class="btn-aside" href="/consult">
                         Consultas
@@ -43,5 +42,16 @@
             </ul>
         </nav>
     </aside>
+    <div class="content">
+        <form action="/register_category">
+            <div>
+                <label for="category">Nome da Categoria:</label>
+                <input type="text" id="category" name="category">
+            </div>
+            <div>
+                <button id="add-restriction" type="button"><h1>+ Adicionar Insumo</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

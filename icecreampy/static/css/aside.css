@@ -36,11 +36,7 @@ li, form {
     width: 100%;
 }
 
-li a {
-    display: block;
-}
-
-button, a {
+.btn-aside {
     text-align: center;
     background-color: #012151;
     color: #fff;
@@ -56,7 +52,7 @@ button, a {
     transition: transform 0.2s ease;
 }
 
-button:hover, a:hover {
+.btn-aside:hover {
     transform: scale(1.01);
 }
 

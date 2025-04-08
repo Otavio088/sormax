@@ -1,6 +1,5 @@
 flask
 flask_sqlalchemy
-mysql-connector-python
-toml
+mysqlclient
 python-dotenv
 pulp
