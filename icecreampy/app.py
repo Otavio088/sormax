@@ -4,9 +4,8 @@ from dotenv import load_dotenv
 from icecreampy.ext import database
 from icecreampy.views import index, autentication, user_registration, home, products_registration, quantity, names, values, calculate
 
-load_dotenv(override=True)
+load_dotenv()
 
-print("DATABASE_URI:", os.getenv('DATABASE_URI'))
 app = Flask(__name__)
 
 app.secret_key = os.getenv('SECRET_KEY')

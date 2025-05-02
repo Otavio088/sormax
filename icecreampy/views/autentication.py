@@ -14,8 +14,6 @@ def validation():
 
         user = accounts.query.filter_by(username = username, password = hash).first()
 
-        print('user: ', user)
-        
         if user:
             session['loggedin'] = True
             session['id'] = user.id

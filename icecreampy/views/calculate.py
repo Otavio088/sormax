@@ -86,7 +86,7 @@ def calculate():
                 {"name": f"Produto {i+1}", "y": quantities[i]} 
                 for i in range(session['num_variables'])
             ]
-            print('SESSION AQUI:', session)
+
             return render_template(
                 'result.html',
                 chart_data=chart_data
@@ -159,8 +159,6 @@ def calculate():
         
     if not session.get('variable_prices'):
         return redirect('/values')
-
-    print('session: ', session)
 
     return render_template(
         'result.html',

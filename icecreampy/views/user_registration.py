@@ -5,7 +5,7 @@ import hashlib
 
 bp = Blueprint('user_registration', __name__)
 
-@bp.route('/user-register', methods=['GET'])
+@bp.route('/register-user', methods=['GET'])
 def open():
     if session.get('loggedin'):
         return redirect('/home')
@@ -22,7 +22,7 @@ def register():
 
         if (password != passwordconfirm):
             flash('Senhas incompatíveis!')
-            return redirect('/register')
+            return redirect('/register-user')
 
         hash = hashlib.sha256(password.encode()).hexdigest()
         
@@ -32,6 +32,6 @@ def register():
         db.session.commit()
 
         flash('Usuário Cadastrado com sucesso!')
-        return redirect('/register')
+        return redirect('/register-user')
 
     return redirect('/')
