@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, request, session
-from icecreampy.models.accounts import accounts
+from icecreampy.models.accounts import Account
 from icecreampy.ext.database import db
 import hashlib
 
@@ -26,7 +26,7 @@ def register():
 
         hash = hashlib.sha256(password.encode()).hexdigest()
         
-        user = accounts(username=username, password=hash, email=email)
+        user = Account(username=username, password=hash, email=email)
 
         db.session.add(user)
         db.session.commit()

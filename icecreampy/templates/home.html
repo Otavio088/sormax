@@ -1,47 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="/static/css/reset.css">
+{% extends "index.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="/static/css/home.css">
-    <link rel="stylesheet" href="/static/css/aside.css">
-    <link rel="icon" href="/static/img/icon-icecream.png">
-</head>
-<body>
-    <aside>
-        <img src="/static/img/icon-icecream.png" alt="Logo Sorveteria">
-        <h2>SORMAX</h2>
-        <nav>
-            <ul>
-                <li>
-                    <form action="/quantity" method="POST">
-                        <button class="btn-aside" type="submit" name="optimization_type" value="maximization">Maximização</button>
-                    </form>
-                </li>
-                <!-- <li>
-                    <form action="/quantity" method="POST">
-                        <button class="btn-aside" type="submit" name="optimization_type" value="minimization">Minimização</button>
-                    </form>
-                </li> -->
-                <li>
-                    <a class="btn-aside" href="/register-products">
-                        Cadastro
-                    </a>
-                </li>
-                <li>
-                    <a class="btn-aside" href="/consult">
-                        Consultas
-                    </a>
-                </li>
-                <li>
-                    <a class="btn-aside" href="/logout" id="btn-leave">
-                        Sair
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
-</body>
-</html>
+    <link rel="stylesheet" href="/static/css/components/aside.css">
+{% endblock %}
+
+{% block content %}
+    {% include "components/aside.html" %}
+{% endblock %}

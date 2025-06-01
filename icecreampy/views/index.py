@@ -7,4 +7,4 @@ def open():
     if session.get('loggedin'):
         return redirect('/home')
 
-    return render_template('index.html')
+    return render_template('login.html')

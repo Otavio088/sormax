@@ -1,0 +1,32 @@
+<!-- Modal de Produto -->
+<div id="modal-product" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeProductModal()">&times;</span>
+    <h2>Novo Produto</h2>
+
+    <form method="POST" action="/register-product">
+      <label>Nome do Produto:</label>
+      <input type="text" name="product_name" required>
+
+      <label>Categoria:</label>
+      <select id="category-select" name="category_id" onchange="loadRestrictions()" required>
+        <option value="">Selecione</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}">{{ cat.name|tojson }}</option>
+        {% endfor %}
+      </select>
+
+      <div id="insumos-container">
+        <label>Insumo:</label>
+        <select name="restriction_id" id="restriction-select" required>
+          <option value="">Selecione uma categoria primeiro</option>
+        </select>
+
+        <label>Quantidade usada:</label>
+        <input type="number" step="0.01" name="quantity_used" required>
+      </div>
+
+      <button type="submit">Salvar Produto</button>
+    </form>
+  </div>
+</div>

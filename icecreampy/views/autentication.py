@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, session, flash
-from icecreampy.models.accounts import accounts
+from icecreampy.models.accounts import Account
 import hashlib
 
 bp = Blueprint('autentication', __name__)
@@ -12,7 +12,7 @@ def validation():
 
         hash = hashlib.sha256(password.encode()).hexdigest()
 
-        user = accounts.query.filter_by(username = username, password = hash).first()
+        user = Account.query.filter_by(username = username, password = hash).first()
 
         if user:
             session['loggedin'] = True

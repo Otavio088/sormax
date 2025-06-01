@@ -1,43 +1,35 @@
 {% extends "index.html" %}
 
-{% block title %} Cadastro {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="/static/css/register-user.css">
+    <link rel="stylesheet" href="/static/css/login-style.css">
 {% endblock %}
 
 {% block content %}
-    <div class="box-register">
+    <div class="box-login">
         {% set msg = get_flashed_messages() %}
         {% if msg %}
             <div id="alert">
                 {{ msg[0] }}
             </div>
         {% endif %}
-        <h1>Cadastro</h1>
+        <h1>Bem-Vindo</h1>
         <div class="content">
-            <form action="/validation" method="POST">
+            <form action="/autentication" method="POST">
                 <div>
                     <label for="username">Usuário:</label>
                     <input type="text" name="username" id="username" placeholder="usuário" required>
-                </div>
-                <div>
-                    <label for="email">E-mail:</label>
-                    <input type="email" name="email" id="email" placeholder="email" required>
                 </div>
                 <div>
                     <label for="password">Senha:</label>
                     <input type="password" name="password" id="password" placeholder="senha" required>
                 </div>
                 <div>
-                    <label for="passwordconfirm">Confirme sua senha:</label>
-                    <input type="password" name="passwordconfirm" id="passwordconfirm" placeholder="senha" required>
-                </div>
-                <div>
-                    <input type="submit" id="btn-register" value="Cadastrar">
+                    <input type="submit" id="btn-submit" value="Entrar">
                 </div>
                 <div class="div-links">
-                    <a href="/">Voltar</a>
+                    <a href="/register-user">Cadastrar novo usuário</a>
                 </div>
             </form>
         </div>

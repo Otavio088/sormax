@@ -1,57 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-    <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/aside.css">
-    <link rel="icon" href="/static/img/icon-icecream.png">
-</head>
-<body>
-    <aside>
-        <img src="/static/img/icon-icecream.png" alt="Logo Sorveteria">
-        <h2>SORMAX</h2>
-        <nav>
-            <ul>
-                <li>
-                    <a class="btn-aside" href="/home">
-                        Início
-                    </a>
-                </li>
-                <li>
-                    <form action="/quantity" method="POST">
-                        <button class="btn-aside" type="submit" name="optimization_type" value="maximization">Maximização</button>
-                    </form>
-                </li>
-                <!-- <li>
-                    <form action="/quantity" method="POST">
-                        <button class="btn-aside" type="submit" name="optimization_type" value="minimization">Minimização</button>
-                    </form>
-                </li> -->
-                <li>
-                    <a class="btn-aside" href="/consult">
-                        Consultas
-                    </a>
-                </li>
-                <li>
-                    <a class="btn-aside" href="/logout" id="btn-leave">
-                        Sair
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+{% extends "home.html" %}
+
+{% block title %}
+    Cadastro
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/css/register-products.css">
+    <link rel="stylesheet" href="/static/css/components/aside.css">
+    <link rel="stylesheet" href="/static/css/components/modal-category.css">
+{% endblock %}
+
+{% block content %}
+    {% include "components/aside.html" %}
     <div class="content">
-        <form action="/register_category">
-            <div>
-                <label for="category">Nome da Categoria:</label>
-                <input type="text" id="category" name="category">
-            </div>
-            <div>
-                <button id="add-restriction" type="button"><h1>+ Adicionar Insumo</button>
-            </div>
-        </form>
+        <div class="cards-container">
+            {% for cat in categories %}
+                <div class="card">
+                    <h2>Categoriga {{ cat.name }}</h2>
+
+                    <button onclick='openModal({{ cat | tojson | safe }})'>Detalhes</button>
+                    <button onclick="openProductModal()">Produtos</button>
+                </div>
+            {%endfor%}
+        </div>
+
+        {% include 'components/modal-category.html' %}
+        {% include 'components/modal-products.html' %}
+
+        <button id="button-add-category" onclick="openModal(null)">+ Nova Categoria</button>
     </div>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/modalCategory.js"></script>
+   <!-- <script src="/static/js/modalProducts.js"></script> -->
+{% endblock %}
+
