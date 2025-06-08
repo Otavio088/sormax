@@ -1,0 +1,28 @@
+<div id="modal-product" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeMaximizationModal()">&times;</span>
+    <h2>Produtos da Categoria <span id="modal-max-product-name"></span></h2>
+    
+    <div id="available-restrictions">
+      <h3>Insumos Disponíveis:</h3>
+      <div id="restrictions-list">
+        <!-- Insumos -->
+      </div>
+    </div>
+
+    <form id="form-max" method="POST" action="/calculate">
+      <input type="hidden" name="category_id_max" id="category_id_max">
+      
+      <div class="select-all-container">
+        <input type="checkbox" id="select-all">
+        <label for="select-all">Selecionar todos</label>
+      </div>
+
+      <div id="products-container">
+        <!-- Produtos -->
+      </div>
+
+      <button type="submit">Calcular</button>
+    </form>
+  </div>
+</div>

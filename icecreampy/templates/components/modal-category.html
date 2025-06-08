@@ -1,0 +1,24 @@
+<div id="modal-category" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+
+    <h2 id="msg-category">Categoria</h2>
+    <form method="POST" action="/delete-category">
+      <input type="hidden" name="category_id_remove" id="category_id_remove">
+      <button type="submit">Deletar Categoria</button>
+    </form>
+    <form id="form-category" class="form-category" method="POST" action="/register-category">
+      <input type="hidden" name="category_id" id="category_id">
+
+      <label for="category">Nome da Categoria:</label>
+      <input type="text" name="category" id="category" placeholder="Nome da Categoria" required> <hr>
+
+      <div id="restrictions">
+        <!-- Aui é criado dinâmicamente pelo js -->
+      </div>
+
+      <button type="button" onclick="addRestriction()">+ Adicionar Insumo</button>
+      <button type="submit">Salvar</button>
+    </form>
+  </div>
+</div>

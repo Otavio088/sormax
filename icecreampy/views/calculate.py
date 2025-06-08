@@ -1,168 +1,138 @@
-from flask import Blueprint, render_template, request, session, redirect
+from flask import Blueprint, flash, render_template, request, session, redirect
+from icecreampy.models.category import Category
+from icecreampy.models.products import Product
+from icecreampy.models.products_restrictions import ProductRestriction
 import pulp
 
-bp = Blueprint('result', __name__)
+bp = Blueprint('calculate', __name__)
 
-@bp.route('/result', methods=['POST', 'GET'])
+@bp.route('/calculate', methods=['POST', 'GET'])
 def calculate():
-    if request.method == 'POST':
+    if not session.get('loggedin'):
+        return redirect('/')
+
+    try:
+        # IDs produtos selecionados e categoria
+        product_ids = request.form.getlist('products[]')
+        category_id = request.form.get('category_id_max')
+
+        # Dados completo dos produtos e categoria
+        category = Category.query.get(category_id)
+        products = Product.query.filter(Product.id.in_(product_ids)).all()
+
+        # Verifica se existem produtos selecionados
+        if not products:
+            flash("Selecione pelo menos um produto!")
+            return redirect('/maximize-products')
+        
+        # Preços dos produtos por unidade
         variable_prices = [
-            float(request.form.get(f'price_x{i}', '0').replace(',', '.')) 
-            for i in range(session['num_variables'])
+            float(product.price) for product in products
         ]
+
+        # Restrições da categoria e os tipos
+        restrictions = category.restrictions
         restriction_units = [
-            request.form.get(f'type_y{i}', 'Unit') 
-            for i in range(session['num_restrictions'])
+            r.unit_type for r in restrictions
         ]
         available_restrictions = [
-            float(request.form.get(f'available_quantity_y{i}', '0').replace(',', '.')) 
-            for i in range(session['num_restrictions'])
-        ]
-        necessary_restrictions = [
-            [float(request.form.get(f'necessary_y{i}_for_x{j}', '0').replace(',', '.')) 
-            for j in range(session['num_variables'])]
-            for i in range(session['num_restrictions'])
+            float(r.quantity_available) for r in restrictions
         ]
 
-        if session['optimization_type'] == 'maximization':
-            
-            # Definir o problema de maximização do lucro
-            prob = pulp.LpProblem('Maximize_IcecreamParlor', pulp.LpMaximize)
+        # Matriz de restrições necessárias (produtos x insumos)
+        necessary_restrictions = []
+        for restriction in restrictions:
+            restriction_row = []
 
-            # Definir as variáveis de decisão
-            x = [
-                pulp.LpVariable(f"x{i+1}", lowBound=0, cat='Continuous') 
-                for i in range(session['num_variables'])
-            ]
+            for product in products:
+                # Busca a quantidade usada deste insumo no produto
+                pr = ProductRestriction.query.filter_by(
+                    product_id=product.id,
+                    restriction_id=restriction.id
+                ).first()
+                restriction_row.append(float(pr.quantity_used) if pr else 0.0)
 
-            # Definir a função objetivo (maximizar o lucro)
-            prob += pulp.lpSum([
-                variable_prices[i] * x[i] for i in range(session['num_variables'])
-            ]), "Profit"
+            necessary_restrictions.append(restriction_row)
 
-            # Adicionar as restrições ao problema
-            for i in range(session['num_restrictions']):
-                prob += pulp.lpSum([
-                    necessary_restrictions[i][j] * x[j] for j in range(session['num_variables'])
-                ]) <= available_restrictions[i], f"Restriction_{i+1}"
-
-            # Resolver o problema
-            prob.solve()
-
-            # Verificar se a solução é ótima
-            if prob.status != pulp.LpStatusOptimal:
-                return render_template(
-                    'result.html',
-                    message="O problema não pôde ser resolvido de forma ótima!"
-                )
-
-            # Obter os resultados ótimos
-            max_profit = round(pulp.value(prob.objective) or 0, 2)
-            quantities = [round(pulp.value(x[i]) or 0, 0) for i in range(session['num_variables'])]
-            used_restrictions = [
-                round(sum(quantities[j] * necessary_restrictions[i][j] for j in range(session['num_variables'])) or 0, 2)
-                for i in range(session['num_restrictions'])
-            ]
-
-            # Total lucro de cada produto
-            total_values = [
-                round(variable_prices[i] * quantities[i], 2) for i in range(session['num_variables'])
-            ]
-
-            costs_variables = []
-
-            # Salvar os resultados na sessão
-            session['max_profit'] = max_profit
-            session['variable_prices'] = variable_prices
-            session['quantities_production'] = quantities
-            session['total_values'] = total_values
-            session['restriction_units'] = restriction_units
-            session['available_restrictions'] = available_restrictions
-            session['used_restrictions'] = used_restrictions
-            session['costs_variables'] = []
-
-            # Preparar os dados para o gráfico
-            chart_data = [
-                {"name": f"Produto {i+1}", "y": quantities[i]} 
-                for i in range(session['num_variables'])
-            ]
-            print('SESSION AQUI:', session)
-            return render_template(
-                'result.html',
-                chart_data=chart_data
-            )
-
-        if session['optimization_type'] == 'minimization':
-            min_production = [
-                float(request.form.get(f'min_x{i}', '0').replace(',', '.')) 
-                for i in range(session['num_variables'])
-            ]
-
-            # Definir o problema de minimização de custos
-            prob = pulp.LpProblem('Minimization_IcecreamParlor', pulp.LpMinimize)
-
-            # Definir as variáveis de decisão
-            x = [
-                pulp.LpVariable(f"x{i+1}", lowBound=0, cat='Continuous') 
-                for i in range(session['num_variables'])
-            ]
-
-            # Definir a função objetivo (minimizar os custos)
-            prob += pulp.lpSum([
-                variable_prices[i] * x[i] for i in range(session['num_variables'])
-            ]), "Cost"
-
-            # Adicionar as restrições ao problema
-            for i in range(session['num_restrictions']):
-                prob += pulp.lpSum([
-                    necessary_restrictions[i][j] * x[j] for j in range(session['num_variables'])
-                ]) <= available_restrictions[i], f"Restriction_{i+1}"
-
-            # Adicionar restrições de produção mínima para cada variável
-            for i in range(session['num_variables']):
-                prob += x[i] >= min_production[i], f"MinProduction_{i+1}"
-
-            # Resolver o problema
-            prob.solve()
-
-            # Verificar se a solução é ótima
-            if prob.status != pulp.LpStatusOptimal:
-                return render_template(
-                    'result.html',
-                    message="O problema não pôde ser resolvido de forma ótima!"
-                )
-
-            # Obter os resultados ótimos
-            min_cost = round(pulp.value(prob.objective) or 0, 2)
-            quantities = [round(pulp.value(x[i]) or 0, 0) for i in range(session['num_variables'])]
-            used_restrictions = [
-                round(sum(quantities[j] * necessary_restrictions[i][j] for j in range(session['num_variables'])) or 0, 2)
-                for i in range(session['num_restrictions'])
-            ]
-
-            costs_variables = [
-                round(quantities[i] * variable_prices[i], 2) 
-                      for i in range(session['num_variables'])
-            ]
-
-            # Salvar os resultados na sessão
-            session['min_cost'] = min_cost
-            session['variable_prices'] = variable_prices
-            session['quantities_production'] = quantities
-            session['restriction_units'] = restriction_units
-            session['available_restrictions'] = available_restrictions
-            session['used_restrictions'] = used_restrictions
-            session['costs_variables'] = costs_variables
-
-            # Preparar os dados para o gráfico
-            chart_data = min_production
+        # Agora monta o problema de maximização
+        prob = pulp.LpProblem('Maximize_Production', pulp.LpMaximize)
         
-    if not session.get('variable_prices'):
-        return redirect('/values')
+        # Variáveis de decisão (quantidade de cada produto a produzir)
+        x = [
+            pulp.LpVariable(f"x{product.id}", lowBound=0, cat='Continuous')
+            for product in products
+        ]
+        
+        # Função objetivo de maximizar o lucro
+        prob += pulp.lpSum([
+            variable_prices[i] * x[i] for i in range(len(products))
+        ]), "Total_Profit"
+        
+        # Restrições (não ultrapassa insumos disponíveis)
+        for i in range(len(restrictions)):
+            prob += pulp.lpSum([
+                necessary_restrictions[i][j] * x[j] for j in range(len(products))
+            ]) <= available_restrictions[i], f"Restriction_{restrictions[i].name}"
+        
+        # Resolver o problema
+        prob.solve()
+        
+        # Processar resultados
+        if prob.status != pulp.LpStatusOptimal:
+            flash("Não foi possível encontrar uma solução ótima com os recursos disponíveis.")
+            return redirect('/maximize-products')
+        
+        # Obtem valores ótimos
+        quantities = [round(pulp.value(var) or 0, 2) for var in x]
+        max_profit = round(pulp.value(prob.objective) or 0, 2)
+        
+        # Calcular uso de insumos
+        used_restrictions = []
+        for i in range(len(restrictions)):
+            total = sum(quantities[j] * necessary_restrictions[i][j] for j in range(len(products)))
+            total = min(total, available_restrictions[i])  # Nunca passa do disponível
+            used_restrictions.append(round(total, 2))
 
-    print('session: ', session)
+        # Preparar dados para o template de resultados
+        products_data = []
+        for i, product in enumerate(products):
+            products_data.append({
+                'id': product.id,
+                'name': product.name,
+                'price': float(product.price),
+                'quantity': int(quantities[i]),
+                'total': round(float(product.price) * quantities[i], 2)
+            })
+        
+        restrictions_data = []
+        for i, restriction in enumerate(restrictions):
+            restrictions_data.append({
+                'name': restriction.name,
+                'available': available_restrictions[i],
+                'used': used_restrictions[i],
+                'unit': restriction.unit_type
+            })
 
-    return render_template(
-        'result.html',
-        chart_data=chart_data
-    )
+        chart_data = {
+            'product_names': [product['name'] for product in products_data],
+            'quantities': [product['quantity'] for product in products_data],
+            'prices': [product['price'] for product in products_data],
+            'restrictions': [r['name'] for r in restrictions_data],
+            'available_restrictions': [r['available'] for r in restrictions_data],
+            'used_restrictions': [r['used'] for r in restrictions_data],
+            'restriction_units': [r['unit'] for r in restrictions_data],
+        }
+
+        return render_template('result.html', 
+                            products=products_data,
+                            restriction_units=restriction_units,
+                            restrictions=restrictions_data,
+                            max_profit=max_profit,
+                            category_name=category.name,
+                            chart_data=chart_data,
+                )        
+
+    except Exception as e:
+        print(f"Erro: {str(e)}")
+        flash("Ocorreu um erro ao calcular a maximização.")
+        return redirect('/maximize-products')

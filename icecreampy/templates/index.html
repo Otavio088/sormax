@@ -3,40 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>{% block title %}{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/index-style.css">
+    {% block extra_css %}{% endblock %}
     <link rel="icon" href="/static/img/icon-icecream.png">
 </head>
 <body>
-    <div class="box-login">
-        {% set msg = get_flashed_messages() %}
-        {% if msg %}
-            <div id="alert">
-                {{ msg[0] }}
-            </div>
-        {% endif %}
-        <h1>Bem-Vindo</h1>
-        <div class="content">
-            <form action="/autentication" method="POST">
-                <div>
-                    <label for="username">Usuário:</label>
-                    <input type="text" name="username" id="username" placeholder="usuário" required>
-                </div>
-                <div>
-                    <label for="password">Senha:</label>
-                    <input type="password" name="password" id="password" placeholder="senha" required>
-                </div>
-                <div>
-                    <input type="submit" id="btn-submit" value="Entrar">
-                </div>
-                <div class="div-links">
-                    <!-- <a href="">Esqueci minha senha</a> -->
-                    <a href="/register-user">Cadastrar novo usuário</a>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% block content %}{% endblock %}
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

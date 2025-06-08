@@ -1,0 +1,28 @@
+{% extends "home.html" %}
+
+{% block title %} Maximização {% endblock %}
+
+{% block extra_css_home %}
+    <link rel="stylesheet" href="/static/css/maximize.css">
+    <link rel="stylesheet" href="/static/css/components/modal-products-maximization.css">
+{% endblock %}
+
+{% block content_home %}
+    <div class="content">
+        <div class="cards-container">
+            {% for cat in categories %}
+                <div class="card">
+                    <h2>Categoria {{ cat.name }}</h2>
+
+                    <button onclick='openMaximizationModal({{ cat | tojson | safe }})'>Maximizar</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% include 'components/modal-products-maximization.html' %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/modalProductsMaximization.js"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+<div id="modal-product" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeProductModal()">&times;</span>
+    <h2>Produtos da Categoria <span id="modal-product-category-name"></span></h2>
+
+    <div id="available-restrictions">
+      <!-- Lista dos insumos disponíveis -->
+    </div>
+
+    <form id="form-products" method="POST" action="/save-products">
+      <input type="hidden" name="category_id_prod" id="category_id_prod">
+
+      <div id="products-container">
+        <!-- Produtos com os insumos e quantidades -->
+      </div>
+
+      <button type="button" onclick="addProductForm()">+ Adicionar Produto</button>
+      <button type="submit">Salvar Produtos</button>
+    </form>
+  </div>
+</div>
