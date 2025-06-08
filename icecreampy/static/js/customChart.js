@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const chartDataRestrictions = restrictionsNames.map((name, index) => ({
         name: name,
         available: availableRestrictions[index],
-        used: usedRestrictions[index]
+        used: usedRestrictions[index],
+        unit_type: restrictionUnits[index]
     }));
     Highcharts.chart('chart_restrictions', {
         chart: {
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         xAxis: {
             categories: restrictionsNames,
             title: {
-                text: 'Restrições'
+                text: 'Insumos'
             }
         },
         yAxis: {
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
             enabled: false
         },
         series: [{
-            name: 'Disponível',
+            name: 'Disponível', 
             data: chartDataRestrictions.map(item => item.available),
             color: '#2b908f'
         }, {

@@ -27,6 +27,8 @@
         </div>
 
         <div id="chart" style="width: 100%; height: 400px; padding-top: 25px;"></div>
+        <div id="chart_restrictions" style="width: 100%; height: 400px; padding-top: 25px;"></div>
+
         <form action="/save" method="POST">
             <input type="hidden" name="max_profit" value="{{ max_profit }}">
             {% for product in products %}
@@ -35,4 +37,20 @@
             <button type="submit">Salvar</button>
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const variableNames = {{ chart_data.product_names | tojson }};
+        const quantitiesProduction = {{ chart_data.quantities | tojson }};
+        const variablePrices = {{ chart_data.prices | tojson }};
+
+        const restrictionsNames = {{ chart_data.restrictions | tojson }};
+        const availableRestrictions = {{ chart_data.available_restrictions | tojson }};
+        const usedRestrictions = {{ chart_data.used_restrictions | tojson }};
+        const restrictionUnits = {{ chart_data.restriction_units | tojson }};
+    </script>
+
+     <script src="https://code.highcharts.com/highcharts.js"></script>
+     <script src="{{ url_for('static', filename='js/customChart.js') }}"></script>
 {% endblock %}
