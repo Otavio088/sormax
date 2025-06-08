@@ -1,90 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados da Otimização</title>
-    <link rel="stylesheet" href="/static/css/reset.css">
+{% extends "home.html" %}
+
+{% block title %} Resultado {% endblock %}
+
+
+{% block extra_css_home %}
     <link rel="stylesheet" href="/static/css/result.css">
-    <link rel="stylesheet" href="/static/css/aside.css">
-    <link rel="icon" href="/static/img/icon-icecream.png">
-</head>
-<body>
-    <aside>
-        <img src="/static/img/icon-icecream.png" alt="Logo Sorveteria">
-        <h2>Sorveteria da Praça</h2>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/home">
-                        <button>Início</button>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <button id="btn-leave">Sair</button>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
+{% endblock %}
+
+{% block content_home %}
     <div class="content">
-        {% if session.optimization_type == 'maximization' %}
-            <h1>Resultado para Maximização<br>de Lucro</h1>
-            <div class="results">
-                <h2>Lucro Máximo: R${{ session.max_profit }}</h2>
-                <h3>Quantidade para produção:</h3>
-                <div class="information">
-                    {% for i in range(session.num_variables) %}
-                        <p>{{ session.variable_names[i] }}(R${{ session.variable_prices[i] }}): {{ session.quantities_production[i] }} Unidades</p>
-                    {% endfor %}
-                </div>
-                <h3>Utilização de Insumos:</h3>
-                <div class="information">
-                    {% for i in range(session.num_restrictions) %}
-                        <p>{{ session.restriction_names[i] }}: {{ session.used_restrictions[i] }}{{ session.restriction_units[i] }} de {{ session.available_restrictions[i] }}{{ session.restriction_units[i] }}</p>
-                    {% endfor %}
-                </div>
+        <h1>Resultado para Maximização<br>de Lucro</h1>
+        <div class="results">
+            <h2>Lucro Máximo: R$ {{ "%.2f"|format(max_profit) }}</h2>
+            <h3>Quantidade para produção:</h3>
+            <div class="information">
+                {% for product in products %}
+                    <p>{{ product.name }} (R${{ "%.2f"|format(product.price) }}): {{ product.quantity }} Unidades</p>
+                {% endfor %}
             </div>
-        {% endif %}
-        {% if session.optimization_type == 'minimization' %}
-            <h1>Resultado para Minimização<br>de Custos</h1>
-            <div class="results">
-                <h2>Mínimo Custo: R${{ session.min_cost }}</h2>
-                <h3>Quantidade para produção:</h3>
-                <div class="information">
-                    {% for i in range(session.num_variables) %}
-                        <p>{{ session.variable_names[i] }}(R${{ session.variable_prices[i] }}): {{ session.quantities_production[i] }} Unidades</p>
-                    {% endfor %}
-                </div>
-                <h3>Utilização de Insumos:</h3>
-                <div class="information">
-                    {% for i in range(session.num_restrictions) %}
-                        <p>{{ session.restriction_names[i] }}: {{ session.used_restrictions[i] }}{{ session.restriction_units[i] }} de {{ session.available_restrictions[i] }}{{ session.restriction_units[i] }}</p>
-                    {% endfor %}
-                </div>
+            <h3>Utilização de Insumos:</h3>
+            <div class="information">
+                {% for restriction in restrictions %}
+                    <p>{{ restriction.name }}: {{ "%.2f"|format(restriction.used) }}{{ restriction.unit }} de {{ "%.2f"|format(restriction.available) }}{{ restriction.unit }}</p>
+                {% endfor %}
             </div>
-        {% endif %}
+        </div>
+
         <div id="chart" style="width: 100%; height: 400px; padding-top: 25px;"></div>
-        <div id="chart_restrictions" style="width: 100%; height: 400px; padding-top: 25px;"></div>
-        <form action="/save">
+        <form action="/save" method="POST">
+            <input type="hidden" name="max_profit" value="{{ max_profit }}">
+            {% for product in products %}
+                <input type="hidden" name="product_{{ product.id }}" value="{{ product.quantity }}">
+            {% endfor %}
             <button type="submit">Salvar</button>
         </form>
     </div>
-     <script>
-        const typeOperation = {{ session.optimization_type | tojson }};
-
-        const variableNames = {{ session.variable_names | tojson }};
-        const variablePrices = {{ session.variable_prices | tojson }};
-        const quantitiesProduction = {{ session.quantities_production | tojson }};
-        const costsVariables = {{ session.costs_variables | tojson }};
-
-        const restrictionsNames = {{ session.restriction_names | tojson }};
-        const availableRestrictions = {{ session.available_restrictions | tojson }};
-        const usedRestrictions = {{ session.used_restrictions | tojson }};
-        const restrictionUnits = {{ session.restriction_units | tojson }};
-     </script>
-     <script src="https://code.highcharts.com/highcharts.js"></script>
-     <script src="{{ url_for('static', filename='js/customChart.js') }}"></script>
-</body>
-</html>
+{% endblock %}

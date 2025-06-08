@@ -1,25 +1,22 @@
 {% extends "home.html" %}
 
-{% block title %}
-    Cadastro
-{% endblock %}
+{% block title %} Cadastro {% endblock %}
 
-{% block extra_css %}
+{% block extra_css_home %}
     <link rel="stylesheet" href="/static/css/register-products.css">
-    <link rel="stylesheet" href="/static/css/components/aside.css">
     <link rel="stylesheet" href="/static/css/components/modal-category.css">
+    <link rel="stylesheet" href="/static/css/components/modal-products.css">
 {% endblock %}
 
-{% block content %}
-    {% include "components/aside.html" %}
+{% block content_home %}
     <div class="content">
         <div class="cards-container">
             {% for cat in categories %}
                 <div class="card">
-                    <h2>Categoriga {{ cat.name }}</h2>
+                    <h2>Categoria {{ cat.name }}</h2>
 
                     <button onclick='openModal({{ cat | tojson | safe }})'>Detalhes</button>
-                    <button onclick="openProductModal()">Produtos</button>
+                    <button onclick='openProductModal({{ cat | tojson | safe }})'>Produtos</button>
                 </div>
             {%endfor%}
         </div>
@@ -33,6 +30,6 @@
 
 {% block scripts %}
     <script src="/static/js/modalCategory.js"></script>
-   <!-- <script src="/static/js/modalProducts.js"></script> -->
+    <script src="/static/js/modalProducts.js"></script>
 {% endblock %}
 

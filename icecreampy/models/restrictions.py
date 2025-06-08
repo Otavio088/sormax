@@ -4,7 +4,7 @@ class Restriction(db.Model):
     __tablename__ = 'restrictions'
     id = db.Column(db.Integer, primary_key=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    name = db.Column(db.String(50), nullable=False, unique=True)
+    name = db.Column(db.String(50), nullable=False)
     unit_type = db.Column(db.String(8), nullable=False)
     quantity_available = db.Column(db.Numeric(10, 2), nullable=False)
 
@@ -12,6 +12,6 @@ class Restriction(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "quantity_available": self.quantity_available,
-            "unit_type": self.unit_type
+            "unit_type": self.unit_type,
+            "quantity_available": self.quantity_available
         }

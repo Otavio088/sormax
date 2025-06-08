@@ -1,3 +1,5 @@
+let restrictionIndex = 0;
+
 function openModal(category) {
     const modal = document.getElementById("modal-category");
     const form = document.getElementById("form-category");
@@ -6,8 +8,6 @@ function openModal(category) {
     // Resetar formulário
     form.reset();
     restrictions.innerHTML = "";
-
-    // Resetar index de restrições
     restrictionIndex = 0
 
     if (category) {
@@ -38,10 +38,10 @@ function loadRestrictions(restriction, index) {
         <input type="hidden" name="restrictions[${index}][id]" value="${restriction.id}">
 
         <label>Insumo:</label>
-        <input type="text" id="restriction_name_${index}" name="restrictions[${index}][name]" placeholder="Nome do insumo" required>
+        <input type="text" id="restriction_name_${index}" name="restrictions[${index}][name]" value="${restriction.name}" placeholder="Nome do insumo" required>
 
         <label>Quantidade disponível:</label>
-        <input type="number" step="0.01" id="restriction_quantity_${index}" name="restrictions[${index}][quantity]" placeholder="Quantidade" required>
+        <input type="number" step="0.01" id="restriction_quantity_${index}" name="restrictions[${index}][quantity]" value="${restriction.quantity_available}" placeholder="Quantidade" required>
 
         <label>Tipo:</label>
         <select id="restriction_unit_${index}" name="restrictions[${index}][unit]" required>
@@ -56,14 +56,9 @@ function loadRestrictions(restriction, index) {
 
     container.appendChild(showRestriction);
 
-    document.getElementById(`restriction_name_${index}`).value = restriction.name;
-    document.getElementById(`restriction_quantity_${index}`).value = restriction.quantity_available;
     document.getElementById(`restriction_unit_${index}`).value = restriction.unit_type;
-
-    restrictionIndex++;
 }
 
-let restrictionIndex = 0;
 function addRestriction() {
     const container = document.getElementById("restrictions");
 
@@ -126,8 +121,4 @@ function closeModal() {
     `;
 
     container.appendChild(restriction)
-}
-
-function removeCategory() {
-
 }
