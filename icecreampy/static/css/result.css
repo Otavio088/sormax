@@ -57,5 +57,7 @@ body {
 form button {
     background-color: #024796;
     padding: 12px;
-    font-size: 20px;    
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
 }

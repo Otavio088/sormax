@@ -32,7 +32,8 @@
         <form action="/save" method="POST">
             <input type="hidden" name="max_profit" value="{{ max_profit }}">
             {% for product in products %}
-                <input type="hidden" name="product_{{ product.id }}" value="{{ product.quantity }}">
+                <input type="hidden" name="products_save[]" value="{{ product.id }}">
+                <input type="hidden" name="quantity_{{ product.id }}" value="{{ product.quantity }}">
             {% endfor %}
             <button type="submit">Salvar</button>
         </form>

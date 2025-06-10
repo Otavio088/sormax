@@ -20,8 +20,14 @@ def register():
         password = request.form.get('password')
         passwordconfirm = request.form.get('passwordconfirm')
 
-        if (password != passwordconfirm):
+        if password != passwordconfirm:
             flash('Senhas incompatíveis!')
+            return redirect('/register-user')
+
+        existing_user = Account.query.filter_by(username=username)
+
+        if existing_user:
+            flash('Nome de usuário já utilizado!')
             return redirect('/register-user')
 
         hash = hashlib.sha256(password.encode()).hexdigest()

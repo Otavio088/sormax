@@ -2,11 +2,14 @@ from flask import Blueprint, flash, render_template, request, session, redirect
 from icecreampy.models.category import Category
 from icecreampy.models.products import Product
 from icecreampy.models.products_restrictions import ProductRestriction
+from icecreampy.models.result import Result
+from icecreampy.models.result_products import ResultProduct
+from icecreampy.ext.database import db
 import pulp
 
 bp = Blueprint('calculate', __name__)
 
-@bp.route('/calculate', methods=['POST', 'GET'])
+@bp.route('/calculate', methods=['POST'])
 def calculate():
     if not session.get('loggedin'):
         return redirect('/')
@@ -136,3 +139,50 @@ def calculate():
         print(f"Erro: {str(e)}")
         flash("Ocorreu um erro ao calcular a maximização.")
         return redirect('/maximize-products')
+
+@bp.route('/save', methods=['POST'])
+def save():
+    if not session.get('loggedin'):
+        return redirect('/')
+
+    try:
+        max_profit = float(request.form.get('max_profit', 0))
+        product_ids = request.form.getlist('products_save[]')
+
+        if not product_ids:
+            flash("Nenhum produto selecionado para salvar!", "error")
+            return redirect(request.referrer)
+
+        # 1. Salvar na tabela results
+        new_result = Result(
+            id_user=session.get('id'),
+            result=max_profit
+        )
+        db.session.add(new_result)
+        db.session.flush()  # Para obter new_result.id
+
+        # 2. Salvar cada produto relacionado na tabela result_products
+        for product_id in product_ids:
+            quantity_str = request.form.get(f'quantity_{product_id}', '0')
+            quantity = int(float(quantity_str))  # Garante inteiro
+
+            product = Product.query.get(product_id)
+            if product:
+                total_value = round(float(product.price) * quantity, 2)
+                new_result_product = ResultProduct(
+                    id_result=new_result.id,
+                    id_product=product.id,
+                    quantity_production=quantity,
+                    total_value=total_value
+                )
+                db.session.add(new_result_product)
+
+        db.session.commit()
+        flash("Resultados salvos com sucesso!", "success")
+        return redirect('/maximize-products')
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao salvar resultados: {str(e)}")
+        flash("Erro ao salvar resultados!", "error")
+        return redirect(request.referrer)
