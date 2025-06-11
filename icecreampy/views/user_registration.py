@@ -14,6 +14,7 @@ def open():
 
 @bp.route('/validation', methods=['POST'])
 def register():
+    print('oi')
     if (request.method == 'POST'):
         username = request.form.get('username')
         email = request.form.get('email')

@@ -3,3 +3,4 @@ flask_sqlalchemy
 mysql-connector-python
 python-dotenv
 pulp
+pymysql

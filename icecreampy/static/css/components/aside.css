@@ -1,61 +1,100 @@
-aside {
-    background-color: #024796;
-    color: white;
-    width: 250px;
-    padding:30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    z-index: 1;
+/* Barra lateral */
+.sidebar {
+  background: #024796dc;
+  color: white;
+  width: 250px;
+  height: 100vh;
+  padding: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
 }
 
-aside img {
-    width: 100px;
+/* Logo */
+.logo-container img {
+  width: 100px;
+  margin-bottom: 20px;
 }
 
-aside h2 {
-    font-size: 25px;
-    font-weight: bold;
-    white-space: nowrap;
-    padding-top: 20px;
-    padding-bottom: 40px;
+.logo-container h2 {
+  font: bold 25px 'Roboto', Arial, sans-serif;
+  text-align: center;
+  margin-bottom: 40px;
+  white-space: nowrap;
 }
 
-nav ul {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+/* Menu */
+.menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-li, form {
+.menu li {
     width: 100%;
+    margin-bottom: 25px;
 }
 
+/* Botões */
 .btn-aside {
-    text-align: center;
-    background-color: #012151;
-    color: #fff;
-    display: inline-block;
-    font-size: 22px;
-    padding: 15px;
-    padding-left: 30px;
-    padding-right: 30px;
-    border-radius: 8px;
-    border: none;
-    width: 100%;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+ padding: 5px 40px;
+  border: 1px solid #00000071;
+  background-color: #024796;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .btn-aside:hover {
-    transform: scale(1.01);
+  background: #003366;
+  transform: scale(1.01);
 }
 
-#btn-leave {
-    background-color: #510D01;
-}  
+/* Botão de saída */
+.btn-sair {
+  background: #510D01;
+}
+.btn-sair:hover {
+  background: #8b0000;
+}
+
+/* Sidebar colapsada */
+.sidebar-collapsed {
+  transform: translateX(-100%);
+}
+
+/* Toggle da sidebar */
+.toggle-sidebar {
+  position: fixed;
+  top: 50%;
+  left: -40px;
+  transform: translateY(-50%);
+  background: #012151;
+  color: white;
+  font-size: 24px;
+  padding: 10px 15px;
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.toggle-sidebar::before {
+  content: "→";
+}
+.sidebar-collapsed + .toggle-sidebar::before {
+  content: "←";
+}
