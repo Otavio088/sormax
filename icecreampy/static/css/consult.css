@@ -1,0 +1,7 @@
+.result-card {
+    padding: 1rem;
+    background-color: #44a5ff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

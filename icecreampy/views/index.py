@@ -8,3 +8,10 @@ def open():
         return redirect('/home')
 
     return render_template('login.html')
+
+@bp.app_errorhandler(404)
+def page_not_found(e):
+    if session.get('loggedin'):
+        return redirect('/home')
+    else:
+        return redirect('/')
