@@ -10,16 +10,19 @@
     <div class="overlay"></div>
 
     <div class="cadastro-container">
-        <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
 
-        {% set msg = get_flashed_messages() %}
-        {% if msg %}
-            <div class="alert">
-                {{ msg[0] }}
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert {{ category }}">
+                {{ message }}
             </div>
+            {% endfor %}
         {% endif %}
+    {% endwith %}
 
         <div class="form-section">
+            <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
             <h2>Cadastro</h2>
             <form action="/validation" method="POST">
                 <div class="grupo_input">

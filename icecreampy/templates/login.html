@@ -10,8 +10,6 @@
     <div class="overlay"></div>
 
     <div class="cadastro-container">
-        <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
-
         {% set msg = get_flashed_messages() %}
         {% if msg %}
             <div class="alert">
@@ -20,6 +18,7 @@
         {% endif %}
 
         <div class="form-section">
+            <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
             <h2>Bem-Vindo</h2>
             <form action="/autentication" method="POST">
                 <div class="grupo_input">

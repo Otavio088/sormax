@@ -14,7 +14,6 @@ def open():
 
 @bp.route('/validation', methods=['POST'])
 def register():
-    print('oi')
     if (request.method == 'POST'):
         username = request.form.get('username')
         email = request.form.get('email')
@@ -22,13 +21,14 @@ def register():
         passwordconfirm = request.form.get('passwordconfirm')
 
         if password != passwordconfirm:
-            flash('Senhas incompatíveis!')
+            flash('Senhas incompatíveis!', 'error')
+
             return redirect('/register-user')
 
-        existing_user = Account.query.filter_by(username=username)
+        existing_user = Account.query.filter_by(username=username).first()
 
         if existing_user:
-            flash('Nome de usuário já utilizado!')
+            flash('Nome de usuário já utilizado!', 'error')
             return redirect('/register-user')
 
         hash = hashlib.sha256(password.encode()).hexdigest()
@@ -38,7 +38,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash('Usuário Cadastrado com sucesso!')
+        flash('Usuário Cadastrado com sucesso!', 'success')
         return redirect('/register-user')
 
     return redirect('/')

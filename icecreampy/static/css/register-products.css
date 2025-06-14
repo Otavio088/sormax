@@ -16,7 +16,6 @@
     box-sizing: border-box;
     overflow: hidden;
 }
-
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -28,15 +27,14 @@
     scrollbar-width: thin;
     scrollbar-color: #9ca3af #e5e7eb;
 }
-
 .card {
     background-color: #024796;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
-    width: 250px; /* Largura fixa para todos os cards */
-    min-height: calc(100vh / 4); /* Altura = 1/4 da tela */
-    max-height: calc(100vh / 4);
+    width: 250px;
+    min-height: calc(100vh / 2.8);
+    max-height: calc(100vh / 2.8);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -47,12 +45,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow-y: auto;
     margin-bottom: 1rem;
     padding-right: 0.5rem;
 }
 
-/* Rolagem interna (opcional, só estética) */
+/* Rolagem interna */
 .card-body::-webkit-scrollbar {
     width: 6px;
 }
@@ -64,7 +61,6 @@
     border-radius: 3px;
 }
 
-/* Botões sempre visíveis no final do card */
 .card-actions {
     display: flex;
     flex-direction: column;
@@ -119,7 +115,7 @@
 }
 
 .card button {
-     text-align: center;
+  text-align: center;
   padding: 5px 40px;
   border: 1px solid #00000071;
   background-color: #0000cd;

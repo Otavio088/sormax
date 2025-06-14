@@ -14,12 +14,11 @@
         <div class="cards-container"> 
             {% for cat in categories %}
                 <div class="card">
-                    <div class="card-body">
                     <h2 class="h2">Categoria {{ cat.name }}</h2>
-                    </div>
+                    <div class="card-body"></div>
                     <div class="card-actions">
-                    <button onclick='openModal({{ cat | tojson | safe }})'>Detalhes</button>
-                    <button onclick='openProductModal({{ cat | tojson | safe }})'>Produtos</button>
+                        <button onclick='openModal({{ cat | tojson | safe }})'>Detalhes</button>
+                        <button onclick='openProductModal({{ cat | tojson | safe }})'>Produtos</button>
                     </div>
                 </div>
             {%endfor%}

@@ -3,14 +3,19 @@ let restrictionIndex = 0;
 function openModal(category) {
     const modal = document.getElementById("modal-category");
     const form = document.getElementById("form-category");
+    const formDelete = document.getElementById("form-delete");
     const restrictions = document.getElementById("restrictions");
 
     // Resetar formulário
     form.reset();
+
+    console.log('form: ', form);
+
     restrictions.innerHTML = "";
     restrictionIndex = 0
 
     if (category) {
+        formDelete.style.display = 'block';
         document.getElementById("category").value = category.name;
         document.getElementById("category_id").value = category.id;
 
@@ -19,7 +24,8 @@ function openModal(category) {
         category.restrictions.forEach((r, index) => {
             loadRestrictions(r, index);
         });
-    } else {
+    } else { console.log('entrou aqui!!!');
+        formDelete.style.display = 'none';
         document.getElementById("category_id").value = "";
         addRestriction();  // inicia com um insumo
     }
@@ -35,8 +41,6 @@ function loadRestrictions(restriction, index) {
     showRestriction.setAttribute("data-index", index);
 
     showRestriction.innerHTML = `
-        <input type="hidden" name="restrictions[${index}][id]" value="${restriction.id}">
-
         <label>Insumo:</label>
         <input type="text" id="restriction_name_${index}" name="restrictions[${index}][name]" value="${restriction.name}" placeholder="Nome do insumo" required>
 
@@ -53,6 +57,10 @@ function loadRestrictions(restriction, index) {
         </select> 
         <button type="button" onclick="removeRestriction(this)">Remover</button> <hr>
     `;
+
+    if (restriction.id) {
+        showRestriction.innerHTML += `<input type="hidden" name="restrictions[${index}][id]" value="${restriction.id}">`;
+    }
 
     container.appendChild(showRestriction);
 

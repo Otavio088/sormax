@@ -114,7 +114,7 @@ def view_result(result_id):
         restrictions=restrictions_data,
         max_profit=float(result.result),
         category_name=category.name,
-        chart_data=chart_data
+        chart_data=chart_data,
     )
 
 @bp.route('/delete-result/<int:result_id>', methods=['POST'])

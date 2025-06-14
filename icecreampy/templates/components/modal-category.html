@@ -3,9 +3,9 @@
     <span class="close" onclick="closeModal()">&times;</span>
 
     <h2 id="msg-category">Categoria</h2>
-    <form method="POST" action="/delete-category">
+    <form id="form-delete" class="form-delete" method="POST" action="/delete-category">
       <input type="hidden" name="category_id_remove" id="category_id_remove">
-      <button type="submit">Deletar Categoria</button>
+        <button type="submit">Deletar Categoria</button>
     </form>
     <form id="form-category" class="form-category" method="POST" action="/register-category">
       <input type="hidden" name="category_id" id="category_id">
