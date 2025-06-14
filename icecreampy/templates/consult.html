@@ -7,12 +7,15 @@
 {% endblock %}
 
 {% block content_home %}
+<div class=overlay>
 <div class="content">
-    <h1>Resultados Salvos</h1>
+    
 
     {% if results %}
+    <div class="cards-container">
         {% for result in results %}
             <div class="result-card">
+                 <div class="card-body">
                 <h3>{{ result.name }}</h3>
                 <p><strong>Lucro Máximo:</strong> R$ {{ "%.2f"|format(result.profit) }}</p>
                 <ul>
@@ -20,16 +23,21 @@
                         <li>{{ product.name }} — {{ product.quantity }} un — R$ {{ "%.2f"|format(product.total_value) }}</li>
                     {% endfor %}
                 </ul>
+                </div>
+                <div class="card-actions">
                 <form method="get" action="{{ url_for('consult.view_result', result_id=result.id) }}">
                     <button type="submit" class="btn-view">Visualizar</button>
                 </form>
                 <form method="post" action="{{ url_for('consult.delete_result', result_id=result.id) }}" onsubmit="return confirm('Tem certeza que deseja deletar este resultado?');">
                     <button type="submit" class="delete-btn">Deletar</button>
                 </form>
+                </div>
             </div>
         {% endfor %}
+    </div>
     {% else %}
         <p>Nenhum resultado salvo ainda.</p>
     {% endif %}
+</div>
 </div>
 {% endblock %}

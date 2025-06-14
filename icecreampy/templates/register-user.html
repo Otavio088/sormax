@@ -7,39 +7,49 @@
 {% endblock %}
 
 {% block content %}
-    <div class="box-register">
+    <div class="overlay"></div>
+
+    <div class="cadastro-container">
+        <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
+
         {% set msg = get_flashed_messages() %}
         {% if msg %}
-            <div id="alert">
+            <div class="alert">
                 {{ msg[0] }}
             </div>
         {% endif %}
-        <h1>Cadastro</h1>
-        <div class="content">
+
+        <div class="form-section">
+            <h2>Cadastro</h2>
             <form action="/validation" method="POST">
-                <div>
+                <div class="grupo_input">
                     <label for="username">Usuário:</label>
                     <input type="text" name="username" id="username" placeholder="usuário" required>
                 </div>
-                <div>
+
+                <div class="grupo_input">
                     <label for="email">E-mail:</label>
                     <input type="email" name="email" id="email" placeholder="email" required>
                 </div>
-                <div>
+
+                <div class="grupo_input">
                     <label for="password">Senha:</label>
                     <input type="password" name="password" id="password" placeholder="senha" required>
                 </div>
-                <div>
+
+                <div class="grupo_input">
                     <label for="passwordconfirm">Confirme sua senha:</label>
                     <input type="password" name="passwordconfirm" id="passwordconfirm" placeholder="senha" required>
                 </div>
-                <div>
-                    <input type="submit" id="btn-register" value="Cadastrar">
-                </div>
-                <div class="div-links">
-                    <a href="/">Voltar</a>
+
+                <div class="botoes">
+                    <button type="submit">Cadastrar</button>
                 </div>
             </form>
+
+            <div class="div-links" style="margin-top: 15px; text-align: center;">
+                <a href="/" style="color: #ffffff; text-decoration: underline;">Voltar</a>
+            </div>
         </div>
     </div>
 {% endblock %}

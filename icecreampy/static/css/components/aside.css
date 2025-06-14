@@ -1,100 +1,67 @@
-/* Barra lateral */
-.sidebar {
-  background: #024796dc;
-  color: white;
-  width: 250px;
-  height: 100vh;
-  padding: 30px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
+aside {
+    background-color: #024796;
+    color: white;
+    width: 250px;
+    padding:30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1;
 }
 
-/* Logo */
-.logo-container img {
-  width: 100px;
-  margin-bottom: 20px;
+aside img {
+    width: 100px;
 }
 
-.logo-container h2 {
-  font: bold 25px 'Roboto', Arial, sans-serif;
-  text-align: center;
-  margin-bottom: 40px;
-  white-space: nowrap;
+aside h2 {
+    font-size: 25px;
+    font-weight: bold;
+    white-space: nowrap;
+    padding-top: 20px;
+    padding-bottom: 40px;
 }
 
-/* Menu */
-.menu ul {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  width: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-.menu li {
+li, form {
     width: 100%;
-    margin-bottom: 25px;
 }
 
-/* Botões */
 .btn-aside {
- padding: 5px 40px;
+  text-align: center;
+  padding: 5px 40px;
   border: 1px solid #00000071;
-  background-color: #024796;
+  background-color: #0000cd;
   color: white;
   border-radius: 5px;
   cursor: pointer;
   border-radius: 30px;
   font-size: 20px;
   font-weight: 700;
-  text-align: center;
+  width: 100%;
+  transition: transform 0.2s ease;
+   display: inline-block;
 }
 
 .btn-aside:hover {
-  background: #003366;
-  transform: scale(1.01);
+    transform: scale(1.01);
+    background-color: rgba(255, 255, 0, 0.527);
 }
 
-/* Botão de saída */
-.btn-sair {
-  background: #510D01;
-}
-.btn-sair:hover {
-  background: #8b0000;
+#btn-leave {
+    background-color: #972d1b;
 }
 
-/* Sidebar colapsada */
-.sidebar-collapsed {
-  transform: translateX(-100%);
-}
-
-/* Toggle da sidebar */
-.toggle-sidebar {
-  position: fixed;
-  top: 50%;
-  left: -40px;
-  transform: translateY(-50%);
-  background: #012151;
-  color: white;
-  font-size: 24px;
-  padding: 10px 15px;
-  border-radius: 8px 0 0 8px;
-  cursor: pointer;
-  z-index: 1001;
-}
-
-.toggle-sidebar::before {
-  content: "→";
-}
-.sidebar-collapsed + .toggle-sidebar::before {
-  content: "←";
+#btn-leave:hover {
+    transform: scale(1.01);
+    background-color: rgba(194, 10, 10, 0.527);
 }

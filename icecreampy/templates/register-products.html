@@ -9,14 +9,18 @@
 {% endblock %}
 
 {% block content_home %}
+<div class=overlay>
     <div class="content">
-        <div class="cards-container">
+        <div class="cards-container"> 
             {% for cat in categories %}
                 <div class="card">
-                    <h2>Categoria {{ cat.name }}</h2>
-
+                    <div class="card-body">
+                    <h2 class="h2">Categoria {{ cat.name }}</h2>
+                    </div>
+                    <div class="card-actions">
                     <button onclick='openModal({{ cat | tojson | safe }})'>Detalhes</button>
                     <button onclick='openProductModal({{ cat | tojson | safe }})'>Produtos</button>
+                    </div>
                 </div>
             {%endfor%}
         </div>
@@ -26,6 +30,7 @@
 
         <button id="button-add-category" onclick="openModal(null)">+ Nova Categoria</button>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

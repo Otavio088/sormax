@@ -1,19 +1,67 @@
-button {
-    cursor: pointer !important;
+.content {
+    margin-left: 250px;
+    padding: 2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: block;
 }
 
 .cards-container {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    max-height: calc(100vh - 120px); /* Altura com scroll se necessário */
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #e5e7eb;
 }
 
 .card {
-  padding: 1rem;
-  background-color: #44a5ff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #024796;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 250px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: white;
+    position: relative;
 }
+
 .card h2 {
-    margin-top: 0; 
+    background-color: #1d4fbb;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Garante que o botão fique na parte inferior do card */
+.card button {
+    text-align: center;
+    padding: 5px 40px;
+    border: 1px solid #00000071;
+    background-color: #d6af00;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.card button:hover {
+    background-color: #ffe058;
+    transform: scale(1.01);
 }
