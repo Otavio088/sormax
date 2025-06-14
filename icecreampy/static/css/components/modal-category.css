@@ -139,8 +139,6 @@ hr {
         opacity: 1;
     }
 }
-
-/* Container dos insumos */
 #restrictions .restriction {
     background-color: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -149,8 +147,6 @@ hr {
     margin-bottom: 1rem;
     position: relative;
 }
-
-/* Labels */
 #restrictions .restriction label {
     font-weight: 600;
     color: #1f2937;
@@ -159,8 +155,6 @@ hr {
     margin-bottom: 0.25rem;
     font-size: 0.95rem;
 }
-
-/* Inputs e selects dentro do modal de categoria */
 #restrictions .restriction input[type="text"],
 #restrictions .restriction input[type="number"],
 #restrictions .restriction select {
@@ -172,16 +166,12 @@ hr {
     background-color: #fff;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-/* Foco nos campos */
 #restrictions .restriction input:focus,
 #restrictions .restriction select:focus {
     border-color: #2563eb;
     outline: none;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
-
-/* Botão Remover */
 #restrictions .restriction button[type="button"] {
     background: transparent;
     color: #ef4444;
@@ -194,27 +184,12 @@ hr {
     display: inline-block;
     margin-top: 0.75rem;
 }
-
 #restrictions .restriction button[type="button"]:hover {
     background-color: #ef4444;
     color: white;
 }
-
-/* Linha divisória entre restrições */
 #restrictions .restriction hr {
     margin: 1rem -1rem 0.5rem;
     border: none;
     border-top: 1px solid #e5e7eb;
-}
-
-/* Responsividade */
-@media (max-width: 500px) {
-    .modal-content {
-        margin: 15% auto;
-        padding: 1.5rem;
-    }
-
-    #msg-category {
-        font-size: 1.5rem;
-    }
 }

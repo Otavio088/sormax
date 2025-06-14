@@ -49,7 +49,6 @@
     padding-right: 0.5rem;
 }
 
-/* Rolagem interna */
 .card-body::-webkit-scrollbar {
     width: 6px;
 }
@@ -60,7 +59,6 @@
     background: #9ca3af;
     border-radius: 3px;
 }
-
 .card-actions {
     display: flex;
     flex-direction: column;
@@ -81,25 +79,20 @@
     transition: transform 0.2s ease;
     display: inline-block;
 }
-
 .card button:first-child {
     background-color: #024796;
 }
-
 .card button:first-child:hover {
     background-color: #1d4fbb;
     transform: scale(1.01);
 }
-
 .card button:last-child {
     background-color: #d6af00;
     color: white;
 }
-
 .card button:last-child:hover {
     background-color: #ffe058;
 }
-
 .card h2 {
     background-color: #1d4fbb;
     color: white;
@@ -113,7 +106,6 @@
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .card button {
   text-align: center;
   padding: 5px 40px;
@@ -129,27 +121,21 @@
   transition: transform 0.2s ease;
    display: inline-block;
 }
-
-.card button:first-child {
-    
-     background-color: #024796;
+.card button:first-child {   
+    background-color: #024796;
 }
-
 .card button:first-child:hover {
     background-color: #1d4fbb;
     transform: scale(1.01);
 }
-
 .card button:last-child {
      background-color: #d6af00;
     color: white;
     
 }
-
 .card button:last-child:hover {
     background-color: #ffe058;
 }
-
 #button-add-category {
     position: fixed;
     bottom: 2rem;
@@ -166,7 +152,6 @@
     transition: background-color 0.2s ease;
     z-index: 10;
 }
-
 #button-add-category:hover {
     background-color: #1d4fbb;
 }

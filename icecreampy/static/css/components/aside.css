@@ -12,11 +12,9 @@ aside {
     top: 0;
     z-index: 1;
 }
-
 aside img {
     width: 100px;
 }
-
 aside h2 {
     font-size: 25px;
     font-weight: bold;
@@ -24,18 +22,15 @@ aside h2 {
     padding-top: 20px;
     padding-bottom: 40px;
 }
-
 nav ul {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
-
 li, form {
     width: 100%;
 }
-
 .btn-aside {
   text-align: center;
   padding: 5px 40px;
@@ -51,16 +46,13 @@ li, form {
   transition: transform 0.2s ease;
    display: inline-block;
 }
-
 .btn-aside:hover {
     transform: scale(1.01);
     background-color: rgba(255, 255, 0, 0.527);
 }
-
 #btn-leave {
     background-color: #972d1b;
 }
-
 #btn-leave:hover {
     transform: scale(1.01);
     background-color: rgba(194, 10, 10, 0.527);

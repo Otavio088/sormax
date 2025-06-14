@@ -54,7 +54,6 @@ body {
   text-align: center;
   font-size: 30px;
 }
-
 .grupo_input {
   display: flex;
   align-items: center;
@@ -62,7 +61,6 @@ body {
   justify-content: center;
   margin-left: 90px;
 }
-
 .form-section label {
   color: #ffffff;
   font-weight: 700;
@@ -71,7 +69,6 @@ body {
   width: 80px;
   text-align: right;
 }
-
 .form-section input {
   padding: 10px;
   width: 200px;
@@ -94,7 +91,6 @@ body {
   justify-content: space-around;
   margin-top: 20px;
 }
-
 .form-section .botoes button {
   padding: 5px 40px;
   border: 1px solid #00000071;
@@ -106,72 +102,9 @@ body {
   font-size: 20px;
   font-weight: 700;
 }
-
 .form-section .botoes button:hover {
   background-color: #0000cd;
 }
-
-@media (max-width: 768px) {
-  .cadastro-container {
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    padding: 20px;
-  }
-
-  .grupo_input {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 0;
-  }
-
-  .form-section label {
-    text-align: left;
-    width: 100%;
-    margin-bottom: 5px;
-    font-size: 18px;
-  }
-
-  .form-section input {
-    width: 100%;
-    font-size: 18px;
-  }
-
-  .form-section h2 {
-    font-size: 26px;
-  }
-
-  .form-section .botoes {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .form-section .botoes button {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-section h2 {
-    font-size: 22px;
-  }
-
-  .form-section label {
-    font-size: 16px;
-  }
-
-  .form-section input {
-    font-size: 16px;
-  }
-
-  .form-section .botoes button {
-    font-size: 16px;
-  }
-}
-
 .alert {
   padding: 15px;
   margin-bottom: 20px;
@@ -181,18 +114,13 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-left: 5px solid;
 }
-
-/* Mensagem de sucesso */
 .alert.success {
   background-color: #d4edda;
   color: #155724;
   border-left-color: #155724;
 }
-
-/* Mensagem de erro */
 .alert.error {
   background-color: #f8d7da;
   color: #972d1b;
   border-left-color: #972d1b;
 }
-
