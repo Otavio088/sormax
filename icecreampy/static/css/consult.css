@@ -1,7 +1,6 @@
 body {
     display: block !important; /* Desativa o flex center do body global */
 }
-
 .content {
     margin-left: 250px;
     padding: 2rem;
@@ -9,7 +8,6 @@ body {
     min-height: 100vh;
     display: block;
 }
-
 .content h1 {
     font-size: 2rem;
     font-weight: 700;
@@ -17,18 +15,16 @@ body {
     margin-bottom: 2rem;
     text-align: left;
 }
-
 .cards-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem; /* Espaçamento entre os cards */
+    gap: 1.5rem;
     overflow-y: auto;
     padding-right: 0.5rem;
-    max-height: calc(100vh - 100px); /* Ajuste conforme altura do cabeçalho */
+    max-height: calc(100vh - 100px);
     scrollbar-width: thin;
     scrollbar-color: #9ca3af #e5e7eb;
 }
-
 .result-card {
     background-color: #024796;
     border-radius: 1rem;
@@ -43,8 +39,6 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     color: white;
 }
-
-/* Conteúdo principal do card (título + lista) */
 .card-body {
     flex-grow: 1;
     display: flex;
@@ -55,7 +49,6 @@ body {
     padding-right: 0.5rem;
 }
 
-/* Estilização da barra de rolagem interna (opcional) */
 .card-body::-webkit-scrollbar {
     width: 6px;
 }
@@ -67,13 +60,11 @@ body {
     border-radius: 3px;
 }
 
-/* Botões sempre no final do card */
 .card-actions {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
-
 .result-card h3 {
     background-color: #1d4fbb;
     color: white;
@@ -87,14 +78,12 @@ body {
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .result-card p,
 .result-card li {
     font-size: 0.95rem;
     color: white;
     margin-bottom: 0.5rem;
 }
-
 .result-card ul {
     list-style-type: none;
     padding-left: 0;
@@ -102,15 +91,11 @@ body {
     flex-grow: 1;
     padding: 5px;
 }
-
 .result-card form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
-
-/* Botões */
-
 .btn-view,
 .delete-btn {
     text-align: center;
@@ -127,17 +112,14 @@ body {
     display: inline-block;
     margin-bottom: 0.5rem;
 }
-
 .btn-view:hover {
     background-color: #ffe058;
     transform: scale(1.01);
 }
-
 .delete-btn {
     background-color: #d60000;
     color: white;
 }
-
 .delete-btn:hover {
     background-color: #ff5858;
 }

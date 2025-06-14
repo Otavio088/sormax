@@ -53,11 +53,15 @@ body {
     width: 90%;
     padding-top: 5%;
 }
-
 form button {
-    background-color: #024796;
-    padding: 12px;
-    font-size: 20px;
+    background-color: #0000cd;
+    color: white;
     border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
 }

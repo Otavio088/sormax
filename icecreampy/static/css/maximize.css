@@ -5,7 +5,6 @@
     min-height: 100vh;
     display: block;
 }
-
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -16,7 +15,6 @@
     scrollbar-width: thin;
     scrollbar-color: #9ca3af #e5e7eb;
 }
-
 .card {
     background-color: #024796;
     border-radius: 1rem;
@@ -44,8 +42,6 @@
     margin-bottom: 1rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-/* Garante que o botão fique na parte inferior do card */
 .card button {
     text-align: center;
     padding: 5px 40px;
@@ -60,7 +56,6 @@
     transition: transform 0.2s ease;
     display: inline-block;
 }
-
 .card button:hover {
     background-color: #ffe058;
     transform: scale(1.01);
