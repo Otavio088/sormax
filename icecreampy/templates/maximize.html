@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content_home %}
+<div class=overlay>
     <div class="content">
         <div class="cards-container">
             {% for cat in categories %}
@@ -21,6 +22,7 @@
 
         {% include 'components/modal-products-maximization.html' %}
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

@@ -1,19 +1,172 @@
-button {
-    cursor: pointer !important;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 0, 0.281); 
+  z-index: 0;
 }
-
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px; /* Espaço reservado para a sidebar */
+    height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 .cards-container {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #e5e7eb;
+}
+.card {
+    background-color: #024796;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 250px;
+    min-height: calc(100vh / 2.8);
+    max-height: calc(100vh / 2.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
 }
 
-.card {
-  padding: 1rem;
-  background-color: #44a5ff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Rolagem interna */
+.card-body::-webkit-scrollbar {
+    width: 6px;
 }
+.card-body::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+.card-body::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 3px;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card button {
+    text-align: center;
+    padding: 5px 40px;
+    border: 1px solid #00000071;
+    background-color: #0000cd;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.card button:first-child {
+    background-color: #024796;
+}
+
+.card button:first-child:hover {
+    background-color: #1d4fbb;
+    transform: scale(1.01);
+}
+
+.card button:last-child {
+    background-color: #d6af00;
+    color: white;
+}
+
+.card button:last-child:hover {
+    background-color: #ffe058;
+}
+
 .card h2 {
-    margin-top: 0; 
+    background-color: #1d4fbb;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card button {
+  text-align: center;
+  padding: 5px 40px;
+  border: 1px solid #00000071;
+  background-color: #0000cd;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 700;
+  width: 100%;
+  transition: transform 0.2s ease;
+   display: inline-block;
+}
+
+.card button:first-child {
+    
+     background-color: #024796;
+}
+
+.card button:first-child:hover {
+    background-color: #1d4fbb;
+    transform: scale(1.01);
+}
+
+.card button:last-child {
+     background-color: #d6af00;
+    color: white;
+    
+}
+
+.card button:last-child:hover {
+    background-color: #ffe058;
+}
+
+#button-add-category {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #0000cd;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}
+
+#button-add-category:hover {
+    background-color: #1d4fbb;
 }

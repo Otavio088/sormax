@@ -1,38 +1,204 @@
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+/* Título do modal */
 
-.modal-content {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 70%;
-  max-width: 700px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+h2 span {
+    background: linear-gradient(90deg, #1d4fbb, #024796);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .modal-content h2 {
-  margin-top: 0;
-  text-align: center;
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
 }
 
-.modal-content label {
-  display: block;
-  margin: 1rem 0 0.5rem;
+/* Título com gradiente apenas no nome da categoria */
+.modal-content h2 span#modal-product-category-name {
+    background: linear-gradient(90deg, #1d4fbb, #024796);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    display: block;
+    margin-top: 0.25rem;
 }
 
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+/* Lista de insumos disponíveis */
+#available-restrictions {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+#available-restrictions strong {
+    color: #1d4fbb;
+}
+
+/* Container de produtos */
+#products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Cada produto adicionado */
+.product-form {
+    background-color: #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    position: relative;
+}
+
+/* Botão de remover produto */
+.product-form .remove-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: #ef4444;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.product-form .remove-button:hover {
+    color: #dc2626;
+}
+
+/* Labels e campos de formulário */
+.product-form label {
+    display: block;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+}
+
+.product-form select,
+.product-form input[type="number"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 2px solid #bfdbfe;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+
+.product-form select:focus,
+.product-form input[type="number"]:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Botões dentro do modal */
+/* Container dos produtos */
+#products-container .product-group {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Botão Remover */
+#products-container .product-group button[type="button"] {
+    background: transparent;
+    color: #ef4444;
+    font-weight: 600;
+    border: 1px solid #ef4444;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+#products-container .product-group button[type="button"]:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Linha divisória entre produtos */
+#products-container .product-group hr {
+    margin: 1rem -1rem 0.5rem;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Labels */
+#products-container .product-group label {
+    font-weight: 600;
+    color: #1f2937;
+    display: block;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+/* Inputs gerais dentro do modal de produto */
+#products-container .product-group input[type="text"],
+#products-container .product-group input[type="number"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 2px solid #bfdbfe;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Foco nos inputs */
+#products-container .product-group input[type="text"]:focus,
+#products-container .product-group input[type="number"]:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Botões do modal */
+.modal form button {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Botão Salvar Produtos */
+.modal form button[type="submit"] {
+    background: linear-gradient(135deg, #024796, #1d4fbb);
+    color: white;
+}
+
+.modal form button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(2, 71, 150, 0.3);
+}
+
+/* Botão Adicionar Produto - AMARELO */
+.modal form button[type="button"]:not([onclick^="removeProduct"]) {
+    background: linear-gradient(to right, #ffe058, #d6af00);
+    color: #000;
+    font-weight: 600;
+}
+
+.modal form button[type="button"]:not([onclick^="removeProduct"]):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(214, 175, 0, 0.3);
 }

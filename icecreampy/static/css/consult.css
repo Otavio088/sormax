@@ -1,7 +1,143 @@
+body {
+    display: block !important; /* Desativa o flex center do body global */
+}
+
+.content {
+    margin-left: 250px;
+    padding: 2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: block;
+}
+
+.content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1d4fbb;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Espaçamento entre os cards */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    max-height: calc(100vh - 100px); /* Ajuste conforme altura do cabeçalho */
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #e5e7eb;
+}
+
 .result-card {
-    padding: 1rem;
-    background-color: #44a5ff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: #024796;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 250px;
+    min-height: 250px; /* Altura mínima apenas como base */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* Impede que algo saia do card */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: white;
+}
+
+/* Conteúdo principal do card (título + lista) */
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+}
+
+/* Estilização da barra de rolagem interna (opcional) */
+.card-body::-webkit-scrollbar {
+    width: 6px;
+}
+.card-body::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+.card-body::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 3px;
+}
+
+/* Botões sempre no final do card */
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.result-card h3 {
+    background-color: #1d4fbb;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.result-card p,
+.result-card li {
+    font-size: 0.95rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.result-card ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    padding: 5px;
+}
+
+.result-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Botões */
+
+.btn-view,
+.delete-btn {
+    text-align: center;
+    padding: 5px 40px;
+    border: 1px solid #00000071;
+    background-color: #d6af00;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    transition: transform 0.2s ease;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.btn-view:hover {
+    background-color: #ffe058;
+    transform: scale(1.01);
+}
+
+.delete-btn {
+    background-color: #d60000;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #ff5858;
 }

@@ -133,6 +133,7 @@ def calculate():
                             max_profit=max_profit,
                             category_name=category.name,
                             chart_data=chart_data,
+                            flag_save=True
                 )        
 
     except Exception as e:

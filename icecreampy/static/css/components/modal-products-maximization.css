@@ -1,53 +1,195 @@
+/* Overlay escuro */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* Conteúdo do modal */
 .modal-content {
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 800px;
-  border-radius: 8px;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 700px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    color: #333;
 }
 
+/* Animação simples de entrada */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Botão de fechar */
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+    color: #aaa;
+    float: right;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
 }
 
-#available-restrictions {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.restriction-item {
-  margin-bottom: 5px;
+/* Cabeçalho */
+.modal-content h2 {
+    font-size: 1.5rem;
+    color: #024796;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 700;
 }
 
-.product-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+/* Seção de insumos disponíveis */
+#available-restrictions h3 {
+    font-size: 1.2rem;
+    color: #1d4fbb;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
+#restrictions-list {
+    background-color: #e3f2fd;
+    border: 1px solid #b3d4eb;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* Checkbox para selecionar todos */
 .select-all-container {
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #e9f5ff;
-  border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #024796;
+}
+
+.select-all-container input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+/* Lista de produtos */
+#products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Rolagem interna (opcional) */
+#products-container::-webkit-scrollbar {
+    width: 6px;
+}
+#products-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+#products-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* Produtos individuais (exemplo de item) */
+.product-item {
+    background-color: #f8fafc;
+    border-left: 4px solid #024796;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-item label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.product-item input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-left: 1rem;
+}
+
+/* Botão final */
+#form-max button {
+    background-color: #0000cd;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+#form-max button:hover {
+    background-color: #1d4fbb;
+    transform: scale(1.02);
+}
+/* Estilo para cada item de produto */
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #f8fafc;
+    border-left: 4px solid #024796;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.product-item:hover {
+    background-color: #f1f5f9;
+}
+
+.product-item input[type="checkbox"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.product-item label {
+    flex: 1;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.product-item label strong {
+    font-weight: 600;
+    color: #024796;
+}
+
+.product-item label span {
+    font-size: 0.9rem;
+    color: #666;
 }

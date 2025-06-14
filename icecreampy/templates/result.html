@@ -35,7 +35,9 @@
                 <input type="hidden" name="products_save[]" value="{{ product.id }}">
                 <input type="hidden" name="quantity_{{ product.id }}" value="{{ product.quantity }}">
             {% endfor %}
-            <button type="submit">Salvar</button>
+            {% if flag_save %}
+                <button type="submit">Salvar</button>
+            {% endif %}
         </form>
     </div>
 {% endblock %}

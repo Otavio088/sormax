@@ -36,7 +36,7 @@ def register_category():
             restrictions[int(index)][field] = request.form[key]
 
     try:
-        if (category_id):
+        if category_id:
             # Consulta tudo que tem esse id de categoria
             cat = Category.query.get(category_id)
             cat.name = category_name
@@ -45,6 +45,7 @@ def register_category():
             cat = Category(name=category_name)
             db.session.add(cat)
             db.session.flush() # Envia operações SQL para o banco mas nao finaliza a transação
+            print(f'Categoria criada: id={cat.id}, nome={cat.name}')
 
         # ids dos que serão update
         received_ids = set()
@@ -68,7 +69,7 @@ def register_category():
                     quantity_available = r['quantity']
                 )
                 db.session.add(new_restriction)
-                db.session.flush() # PReenche o new_restriction.id com valor gerado no banco
+                db.session.flush() # Preenche o new_restriction.id com valor gerado no banco
                 received_ids.add(new_restriction.id)
 
         # Remove insumos excluídos pelo usuário
@@ -97,6 +98,11 @@ def category_remove():
         category = Category.query.get(category_id)
 
         if category:
+            # 1. Deleta os vínculos dos insumos com produtos
+            for restriction in category.restrictions:
+                ProductRestriction.query.filter_by(restriction_id=restriction.id).delete()
+
+            # 2. Deleta a categoria (junto com os restrictions por causa do cascade)
             db.session.delete(category)
             db.session.commit()
             print('Categoria deletada com sucesso!')
@@ -227,7 +233,7 @@ def data_maximization():
     return render_template('maximize.html', categories=result)
 
 def get_all_data_categories():
-    categories = Category.query.options(joinedload(Category.restrictions)).order_by(Category.name).all()
+    categories = Category.query.options(joinedload(Category.restrictions)).all()
     result = []
 
     for cat in categories:

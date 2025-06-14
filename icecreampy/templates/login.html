@@ -7,31 +7,38 @@
 {% endblock %}
 
 {% block content %}
-    <div class="box-login">
+    <div class="overlay"></div>
+
+    <div class="cadastro-container">
         {% set msg = get_flashed_messages() %}
         {% if msg %}
-            <div id="alert">
+            <div class="alert">
                 {{ msg[0] }}
             </div>
         {% endif %}
-        <h1>Bem-Vindo</h1>
-        <div class="content">
+
+        <div class="form-section">
+            <img src="/static/img/icon-icecream.png" alt="Logo da Empresa">
+            <h2>Bem-Vindo</h2>
             <form action="/autentication" method="POST">
-                <div>
+                <div class="grupo_input">
                     <label for="username">Usuário:</label>
                     <input type="text" name="username" id="username" placeholder="usuário" required>
                 </div>
-                <div>
+
+                <div class="grupo_input">
                     <label for="password">Senha:</label>
                     <input type="password" name="password" id="password" placeholder="senha" required>
                 </div>
-                <div>
-                    <input type="submit" id="btn-submit" value="Entrar">
-                </div>
-                <div class="div-links">
-                    <a href="/register-user">Cadastrar novo usuário</a>
+
+                <div class="botoes">
+                    <button type="submit">Entrar</button>
                 </div>
             </form>
+
+            <div class="div-links" style="margin-top: 15px; text-align: center;">
+                <a href="/register-user" style="color: #ffffff; text-decoration: underline;">Cadastrar novo usuário</a>
+            </div>
         </div>
     </div>
 {% endblock %}
