@@ -5,6 +5,8 @@ from icecreampy.models.category import Category
 from icecreampy.models.restrictions import Restriction
 from icecreampy.models.products import Product
 from icecreampy.models.products_restrictions import ProductRestriction
+from icecreampy.models.products_fixed_costs import ProductFixedCost
+from icecreampy.models.fixed_costs import FixedCost
 from sqlalchemy.orm import joinedload
 
 bp = Blueprint('category_routes', __name__)
@@ -32,7 +34,7 @@ def register_category():
 
             # Garante que o insumo com esse índice existe
             while len(restrictions) <= int(index):
-                restrictions.append({"name": "", "quantity": "", "unit": ""})
+                restrictions.append({"name": "", "quantity": "", "unit": "", "unit_price": ""})
             restrictions[int(index)][field] = request.form[key]
 
     try:
@@ -58,6 +60,7 @@ def register_category():
                     restriction.name = r['name']
                     restriction.quantity_available = r['quantity']
                     restriction.unit_type = r['unit']
+                    restriction.unit_price = r['unit_price']
 
                     received_ids.add(restriction.id)                    
             else:
@@ -66,7 +69,8 @@ def register_category():
                     category_id = cat.id,
                     name = r['name'],
                     unit_type = r['unit'],
-                    quantity_available = r['quantity']
+                    quantity_available = r['quantity'],
+                    unit_price = r['unit_price']
                 )
                 db.session.add(new_restriction)
                 db.session.flush() # Preenche o new_restriction.id com valor gerado no banco
@@ -127,7 +131,12 @@ def register_product():
                 field = parts[2].split(']')[0]
 
                 while len(products) <= product_index:
-                    products.append({'id': None, 'name': '', 'price': Decimal('0.00'), 'restrictions': []})
+                    products.append({
+                        'id': None, 
+                        'name': '', 
+                        'restrictions': [],
+                        'fixed_costs': []
+                    })
 
                 value = request.form[key]
 
@@ -136,9 +145,8 @@ def register_product():
                     product_ids.add(int(value))
                 elif field == 'name':
                     products[product_index]['name'] = value
-                elif field == 'price':
-                    products[product_index]['price'] = Decimal(value.replace(',', '.'))
 
+         # Capturar restrições
         for key in request.form:
             if 'restrictions' in key and 'quantity' in key:
                 parts = key.split('[')
@@ -155,13 +163,30 @@ def register_product():
                     }
                     products[product_index]['restrictions'].append(restriction)
 
+        # Capturar custos fixos
+        for key in request.form:
+            if 'fixed_costs' in key and 'quantity' in key:
+                parts = key.split('[')
+                product_index = int(parts[1].split(']')[0])
+                fixed_index = int(parts[3].split(']')[0])
+
+                quantity_key = f'products[{product_index}][fixed_costs][{fixed_index}][quantity]'
+                id_key = f'products[{product_index}][fixed_costs][{fixed_index}][id]'
+
+                if id_key in request.form and quantity_key in request.form:
+                    fixed_cost = {
+                        'id': int(request.form.get(id_key)),
+                        'quantity': Decimal(request.form.get(quantity_key).replace(',', '.'))
+                    }
+                    products[product_index]['fixed_costs'].append(fixed_cost)
+
         for prod in products:
             if prod['id']:
                 # Produto já existente, atualiza
                 product = Product.query.get(prod['id'])
                 if product:
                     product.name = prod['name']
-                    product.price = prod['price']
+                    product.price = calculate_unit_price(prod)
                 else:
                     continue  # se o id não for encontrado, pula
 
@@ -188,9 +213,31 @@ def register_product():
                     if restr_id not in current_restr_ids:
                         db.session.delete(existing_restr[restr_id])
 
+                # Atualiza/insere custos fixos
+                existing_fc = {
+                    fc.fixed_cost_id: fc for fc in getattr(product, 'fixed_costs', [])
+                }
+
+                for fc in prod['fixed_costs']:
+                    if fc['id'] in existing_fc:
+                        existing_fc[fc['id']].quantity_used = fc['quantity']
+                    else:
+                        new_fc = ProductFixedCost(
+                            product_id=product.id,
+                            fixed_cost_id=fc['id'],
+                            quantity_used=fc['quantity']
+                        )
+                        db.session.add(new_fc)
+
+                # Remove custos fixos que não vieram no form
+                current_fc_ids = [fc['id'] for fc in prod['fixed_costs']]
+                for fc_id in list(existing_fc):
+                    if fc_id not in current_fc_ids:
+                        db.session.delete(existing_fc[fc_id])
+
             else:
                 # Novo produto
-                product = Product(name=prod['name'], price=prod['price'])
+                product = Product(name=prod['name'], price=calculate_unit_price(prod))
                 db.session.add(product)
                 db.session.flush()
                 product_ids.add(product.id)
@@ -275,7 +322,46 @@ def get_all_data_categories():
                 ]
             })
 
+        # Custos fixos da categoria
+        fixed_costs = FixedCost.query.filter_by().all()
+
+        fixed_cost_list = [
+            {
+                'id': fc.id,
+                'name': fc.name,
+                'unit_type': fc.unit_type,
+                'quantity_available': float(fc.quantity_available),
+                'unit_price': float(fc.unit_price)
+            }
+            for fc in fixed_costs
+        ]
+        # Atribui no dicionário
         category_dict['products'] = product_list
+        category_dict['fixed_costs'] = fixed_cost_list
+
         result.append(category_dict)
 
     return result or []
+
+def calculate_unit_price(prod):
+    total = Decimal('0.00')
+
+    for r in prod.get('restrictions', []):
+        restr = Restriction.query.get(r['id'])
+        if restr and restr.unit_price is not None:
+            try:
+                price = Decimal(str(restr.unit_price))
+                total += r['quantity'] * price
+            except Exception as e:
+                print(f"Erro ao calcular restrição {r['id']}: {e}")
+
+    for fc in prod.get('fixed_costs', []):
+        cost = FixedCost.query.get(fc['id'])
+        if cost and cost.unit_price is not None:
+            try:
+                price = Decimal(str(cost.unit_price))
+                total += fc['quantity'] * price
+            except Exception as e:
+                print(f"Erro ao calcular custo fixo {fc['id']}: {e}")
+
+    return round(total, 2)

@@ -1,0 +1,58 @@
+/* Estrutura principal - mantida */
+.costs-wrapper {
+  margin-left: 250px;
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.costs-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  /* REMOVIDO height: calc(100vh - 4rem) */
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* Nova altura máxima */
+}
+
+/* Container de scroll - ESSA É A CHAVE DA SOLUÇÃO */
+.scroll-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px; /* Altura mínima garantida */
+  max-height: calc(80vh - 200px); /* Ajuste baseado no espaço disponível */
+  border: 1px solid #eee; /* Opcional: visualização da área */
+  margin-top: 1rem;
+}
+
+/* Container de campos - ajuste sutil */
+.fixed-costs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0.25rem 2rem 0; /* Espaço extra no fundo */
+}
+
+/* Melhorias visuais nos campos */
+.fixed-cost-input {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+}
+
+/* Barra de scroll mais discreta */
+.scroll-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}

@@ -1,9 +1,8 @@
 from icecreampy.ext.database import db
 
-class Restriction(db.Model):
-    __tablename__ = 'restrictions'
+class FixedCost(db.Model):
+    __tablename__ = 'fixed_costs'
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     unit_type = db.Column(db.String(8), nullable=False)
     quantity_available = db.Column(db.Numeric(10, 2), nullable=False)
@@ -14,6 +13,6 @@ class Restriction(db.Model):
             "id": self.id,
             "name": self.name,
             "unit_type": self.unit_type,
-            "quantity_available": self.quantity_available,
-            "unit_price": self.unit_price
+            "quantity_available": float(self.quantity_available),
+            "unit_price": float(self.unit_price)
         }
