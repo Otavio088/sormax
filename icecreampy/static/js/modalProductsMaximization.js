@@ -23,7 +23,7 @@ function openMaximizationModal(category) {
         productDiv.innerHTML = `
             <input type="checkbox" name="products[]" value="${product.id}" id="product-${product.id}">
             <label for="product-${product.id}">
-                ${product.name} - R$ ${product.price_total.toFixed(2)} Unidade.
+                ${product.name} - R$ ${product.price_total.toFixed(2)} Litro.
             </label>
         `;
         productsContainer.appendChild(productDiv);

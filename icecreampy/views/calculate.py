@@ -4,7 +4,9 @@ from icecreampy.models.products import Product
 from icecreampy.models.products_restrictions import ProductRestriction
 from icecreampy.models.result import Result
 from icecreampy.models.result_products import ResultProduct
+from icecreampy.models.fixed_costs import FixedCost
 from icecreampy.ext.database import db
+from decimal import Decimal, ROUND_HALF_UP
 import pulp
 
 bp = Blueprint('calculate', __name__)
@@ -30,7 +32,7 @@ def calculate():
         
         # Preços dos produtos por unidade
         variable_prices = [
-            float(product.price) for product in products
+            float(product.price_total) for product in products
         ]
 
         # Restrições da categoria e os tipos
@@ -87,7 +89,7 @@ def calculate():
         
         # Obtem valores ótimos
         quantities = [round(pulp.value(var) or 0, 2) for var in x]
-        max_profit = round(pulp.value(prob.objective) or 0, 2)
+        gross_profit = round(pulp.value(prob.objective) or 0, 2)
         
         # Calcular uso de insumos
         used_restrictions = []
@@ -102,9 +104,9 @@ def calculate():
             products_data.append({
                 'id': product.id,
                 'name': product.name,
-                'price': float(product.price),
+                'price': float(product.price_total),
                 'quantity': int(quantities[i]),
-                'total': round(float(product.price) * quantities[i], 2)
+                'total': round(float(product.price_total) * quantities[i], 2)
             })
         
         restrictions_data = []
@@ -126,11 +128,37 @@ def calculate():
             'restriction_units': [r['unit'] for r in restrictions_data],
         }
 
+        # Cálculo do custo fixo proporcional ao tempo de produção
+        total_fixed_costs = sum(
+            (fc.price_month / Decimal('30')) * Decimal(category.days_production)
+            for fc in FixedCost.query.all()
+        ).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        # Custo variável total (insumos)
+        total_variable_costs = Decimal('0.00')
+        for i, product in enumerate(products):
+            quantity = Decimal(str(quantities[i]))
+            restrictions_used = ProductRestriction.query.filter_by(product_id=product.id).all()
+            for ru in restrictions_used:
+                if ru.restriction and ru.restriction.unit_price:
+                    unit_price = Decimal(str(ru.restriction.unit_price))
+                    total_variable_costs += unit_price * Decimal(str(ru.quantity_used)) * quantity
+
+        total_variable_costs = total_variable_costs.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        # Cálculo do lucro líquido
+        net_profit = Decimal(str(gross_profit)) - total_fixed_costs
+        net_profit = Decimal(str(net_profit)) - total_variable_costs
+        net_profit = net_profit.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
         return render_template('result.html', 
                             products=products_data,
                             restriction_units=restriction_units,
                             restrictions=restrictions_data,
-                            max_profit=max_profit,
+                            gross_profit=gross_profit,
+                            total_fixed_costs=total_fixed_costs,
+                            total_variable_costs=total_variable_costs,
+                            net_profit=net_profit,
                             category_name=category.name,
                             chart_data=chart_data,
                             flag_save=True
@@ -147,7 +175,10 @@ def save():
         return redirect('/')
 
     try:
-        max_profit = float(request.form.get('max_profit', 0))
+        gross_profit = float(request.form.get('gross_profit', 0))
+        net_profit = float(request.form.get('net_profit', 0))
+        total_fixed_costs = float(request.form.get('total_fixed_costs', 0))
+        total_variable_costs = float(request.form.get('total_variable_costs', 0))
         product_ids = request.form.getlist('products_save[]')
 
         if not product_ids:
@@ -156,8 +187,11 @@ def save():
 
         # 1. Salvar na tabela results
         new_result = Result(
-            id_user=session.get('id'),
-            result=max_profit
+            user_id=session.get('id'),
+            gross_profit=gross_profit,
+            net_profit=net_profit,
+            total_fixed_costs=total_fixed_costs,
+            total_variable_costs=total_variable_costs
         )
         db.session.add(new_result)
         db.session.flush()  # Para obter new_result.id
@@ -169,10 +203,10 @@ def save():
 
             product = Product.query.get(product_id)
             if product:
-                total_value = round(float(product.price) * quantity, 2)
+                total_value = round(float(product.price_total) * quantity, 2)
                 new_result_product = ResultProduct(
-                    id_result=new_result.id,
-                    id_product=product.id,
+                    result_id=new_result.id,
+                    product_id=product.id,
                     quantity_production=quantity,
                     total_value=total_value
                 )

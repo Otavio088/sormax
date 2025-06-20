@@ -7,8 +7,6 @@ class ResultProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity_production = db.Column(db.Integer, nullable=False)
     total_value = db.Column(db.Numeric(12, 2), nullable=False)
-    total_var_cost = db.Column(db.Numeric(12, 2), nullable=False)
-    total_fixed_cost = db.Column(db.Numeric(12, 2), nullable=False)
 
     def to_json(self):
         return {
@@ -16,7 +14,5 @@ class ResultProduct(db.Model):
             "product_id": self.product_id,
             "product_name": self.product.name,
             "quantity_production": self.quantity_production,
-            "total_value": float(self.total_value),
-            "total_var_cost": float(self.total_var_cost),
-            "total_fixed_cost": float(self.total_fixed_cost)
+            "total_value": float(self.total_value)
         }

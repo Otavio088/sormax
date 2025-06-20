@@ -6,6 +6,8 @@ from icecreampy.models.restrictions import Restriction
 from icecreampy.models.products import Product
 from icecreampy.models.products_restrictions import ProductRestriction
 from icecreampy.models.fixed_costs import FixedCost
+from icecreampy.models.result import Result
+from icecreampy.models.result_products import ResultProduct
 from sqlalchemy.orm import joinedload
 
 bp = Blueprint('category_routes', __name__)
@@ -23,9 +25,6 @@ def category_registration():
 
 @bp.route('/register-category', methods=['POST'])
 def register_category():
-    print('----------------------------')
-    print('request.form: ', request.form)
-    print('----------------------------')
     category_id = request.form.get('category_id')
     category_name = request.form.get('category')
     category_days_production = request.form.get('days_production')
@@ -41,7 +40,6 @@ def register_category():
             while len(restrictions) <= int(index):
                 restrictions.append({"name": "", "quantity": "", "unit": "", "unit_price": ""})
             restrictions[int(index)][field] = request.form[key]
-    print('restrictions: ', restrictions)
 
     try:
         if category_id:
@@ -85,7 +83,26 @@ def register_category():
                 db.session.add(new_restriction)
                 db.session.flush()
                 received_ids.add(new_restriction.id)
-        print('received_ids: ', received_ids)
+
+                # Buscar todos os produtos da categoria
+                products_in_category = Product.query.join(ProductRestriction).join(Restriction).filter(
+                    Restriction.category_id == cat.id
+                ).all()
+
+                for p in products_in_category:
+                    # Verifica se o vínculo já existe
+                    existing = ProductRestriction.query.filter_by(
+                        product_id=p.id,
+                        restriction_id=new_restriction.id
+                    ).first()
+                    if not existing:
+                        new_link = ProductRestriction(
+                            product_id=p.id,
+                            restriction_id=new_restriction.id,
+                            quantity_used=Decimal('0.00')
+                        )
+                        db.session.add(new_link)
+
         # Remove insumos excluídos pelo usuário
         if category_id:
             current_ids = { r.id for r in cat.restrictions }
@@ -112,14 +129,39 @@ def category_remove():
         category = Category.query.get(category_id)
 
         if category:
-            # 1. Deleta os vínculos dos insumos com produtos
-            for restriction in category.restrictions:
-                ProductRestriction.query.filter_by(restriction_id=restriction.id).delete()
+            # 1. Buscar todos os produtos associados à categoria
+            products = Product.query.join(ProductRestriction).join(Restriction).filter(
+                Restriction.category_id == category.id
+            ).all()
+            product_ids = [p.id for p in products]
 
-            # 2. Deleta a categoria (junto com os restrictions por causa do cascade)
+            # 2. Buscar todos os ResultProduct com esses produtos
+            result_products = ResultProduct.query.filter(
+                ResultProduct.product_id.in_(product_ids)
+            ).all()
+
+            # 3. Coletar todos os Result que serão afetados
+            result_ids = {rp.result_id for rp in result_products}
+
+            # 4. Deletar todos os ResultProduct
+            for rp in result_products:
+                db.session.delete(rp)
+
+            # 5. Deletar todos os Result
+            for result_id in result_ids:
+                result = Result.query.get(result_id)
+                if result:
+                    db.session.delete(result)
+
+            # 6. Deletar os produtos associados à categoria
+            for product in products:
+                db.session.delete(product)
+
+            # 7. Deletar a categoria (e automaticamente as restrictions via cascade)
             db.session.delete(category)
+
             db.session.commit()
-            print('Categoria deletada com sucesso!')
+            print('Categoria, produtos, insumos e resultados deletados com sucesso!')
     except Exception as err:
         db.session.rollback()
         print('Erro ao deletar categoria: ', err)
@@ -272,7 +314,7 @@ def data_maximization():
     return render_template('maximize.html', categories=result)
 
 def get_all_data_categories():
-    categories = Category.query.options(joinedload(Category.restrictions)).all()
+    categories = Category.query.all()
     result = []
 
     for cat in categories:

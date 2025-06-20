@@ -22,7 +22,7 @@ function openProductModal(category) {
 
   restrictionsList = category.restrictions;
   restrictionsList.forEach(r => {
-    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type} - R$ ${r.unit_price} Unidade.</p>`;
+    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type} - R$ ${r.unit_price} Litro.</p>`;
   });
 
   // Disponibiliza o restrictionsList mesmo se não tiver categoria ou produtos
@@ -54,7 +54,7 @@ function loadProducts(product, index) {
     <label>% de Lucro desejado:</label>
     <input type="number" step="0.01" min="0" name="products[${index}][profit_percentage]" value="${product.profit_percentage || 0}" required>
 
-    <label>Preço por unidade:</label>
+    <label>Preço por litro:</label>
     <input type="number" step="0.01" min="0" name="products[${index}][price]" value="${product.price_total}" disabled style="background-color: #e9ecef;">
   `;
 
@@ -88,7 +88,7 @@ function addProductForm() {
     <label>% de Lucro:</label>
     <input type="number" step="0.01" min="1" name="products[${productIndex}][profit_percentage]" required>
 
-    <label>Preço por unidade:</label>
+    <label>Preço por litro:</label>
     <input type="number" step="0.01" min="0" name="products[${productIndex}][price]" disabled style="background-color: #e9ecef;">
   `;
 

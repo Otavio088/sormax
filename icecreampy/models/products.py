@@ -15,6 +15,12 @@ class Product(db.Model):
         cascade='all, delete-orphan'
     )
 
+    result_products = db.relationship(
+        'ResultProduct', 
+        backref='product', 
+        cascade="all, delete-orphan"
+    )
+
     def to_json(self):
         return {
             "id": self.id,
