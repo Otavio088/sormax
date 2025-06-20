@@ -8,9 +8,6 @@ function openModal(category) {
 
     // Resetar formulário
     form.reset();
-
-    console.log('form: ', form);
-
     restrictions.innerHTML = "";
 
     if (category) {
@@ -18,6 +15,7 @@ function openModal(category) {
         document.getElementById("category").value = category.name;
         document.getElementById("category_id").value = category.id;
         document.getElementById("category_id_remove").value = category.id; // para permitir deleção
+        document.getElementById("days_production").value = parseInt(category.days_production);
 
         restrictionIndex = category.restrictions.length;
 

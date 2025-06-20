@@ -1,11 +1,10 @@
-from decimal import Decimal
 from flask import Blueprint, flash, render_template, request, session, redirect
+from decimal import Decimal, ROUND_HALF_UP
 from icecreampy.ext.database import db
 from icecreampy.models.category import Category
 from icecreampy.models.restrictions import Restriction
 from icecreampy.models.products import Product
 from icecreampy.models.products_restrictions import ProductRestriction
-from icecreampy.models.products_fixed_costs import ProductFixedCost
 from icecreampy.models.fixed_costs import FixedCost
 from sqlalchemy.orm import joinedload
 
@@ -18,12 +17,18 @@ def category_registration():
 
     result = get_all_data_categories()
 
-    return render_template('register-products.html', categories=result)
+    costs = [fc.to_json() for fc in FixedCost.query.all()]
+
+    return render_template('register-products.html', categories=result, fixed_costs=costs)
 
 @bp.route('/register-category', methods=['POST'])
 def register_category():
+    print('----------------------------')
+    print('request.form: ', request.form)
+    print('----------------------------')
     category_id = request.form.get('category_id')
     category_name = request.form.get('category')
+    category_days_production = request.form.get('days_production')
     restrictions = []
 
     # Pega todas os insumos trazidos pelo formulário
@@ -36,18 +41,23 @@ def register_category():
             while len(restrictions) <= int(index):
                 restrictions.append({"name": "", "quantity": "", "unit": "", "unit_price": ""})
             restrictions[int(index)][field] = request.form[key]
+    print('restrictions: ', restrictions)
 
     try:
         if category_id:
             # Consulta tudo que tem esse id de categoria
             cat = Category.query.get(category_id)
             cat.name = category_name
+            cat.days_production = category_days_production
         else:
             # Nova categoria para adicionar no banco
-            cat = Category(name=category_name)
+            cat = Category(
+                name=category_name,
+                days_production=category_days_production
+            )
             db.session.add(cat)
             db.session.flush() # Envia operações SQL para o banco mas nao finaliza a transação
-            print(f'Categoria criada: id={cat.id}, nome={cat.name}')
+            print(f'Categoria criada: id={cat.id}, nome={cat.name}, dias de produção={cat.days_production}')
 
         # ids dos que serão update
         received_ids = set()
@@ -73,9 +83,9 @@ def register_category():
                     unit_price = r['unit_price']
                 )
                 db.session.add(new_restriction)
-                db.session.flush() # Preenche o new_restriction.id com valor gerado no banco
+                db.session.flush()
                 received_ids.add(new_restriction.id)
-
+        print('received_ids: ', received_ids)
         # Remove insumos excluídos pelo usuário
         if category_id:
             current_ids = { r.id for r in cat.restrictions }
@@ -119,11 +129,13 @@ def category_remove():
 @bp.route('/save-products', methods=['POST'])
 def register_product():
     try:
-        print("request.form dict:", request.form.to_dict(flat=False))
-        
         products = []
         product_ids = set()
 
+        # Pega id da categoria para remover produtos que não vieram no form (filtrando por categoria) e utilizalo nos preços
+        category_id = request.form.get('category_id_prod')
+
+        # Dados formulário
         for key in request.form:
             if key.startswith('products[') and 'restrictions' not in key:
                 parts = key.split('[')
@@ -132,10 +144,10 @@ def register_product():
 
                 while len(products) <= product_index:
                     products.append({
-                        'id': None, 
-                        'name': '', 
+                        'id': None,
+                        'name': '',
+                        'profit_percentage': Decimal('0.00'),
                         'restrictions': [],
-                        'fixed_costs': []
                     })
 
                 value = request.form[key]
@@ -146,7 +158,10 @@ def register_product():
                 elif field == 'name':
                     products[product_index]['name'] = value
 
-         # Capturar restrições
+                elif field == 'profit_percentage':
+                    products[product_index]['profit_percentage'] = Decimal(value.replace(',', '.'))
+
+        # Capturar restrições
         for key in request.form:
             if 'restrictions' in key and 'quantity' in key:
                 parts = key.split('[')
@@ -163,30 +178,20 @@ def register_product():
                     }
                     products[product_index]['restrictions'].append(restriction)
 
-        # Capturar custos fixos
-        for key in request.form:
-            if 'fixed_costs' in key and 'quantity' in key:
-                parts = key.split('[')
-                product_index = int(parts[1].split(']')[0])
-                fixed_index = int(parts[3].split(']')[0])
-
-                quantity_key = f'products[{product_index}][fixed_costs][{fixed_index}][quantity]'
-                id_key = f'products[{product_index}][fixed_costs][{fixed_index}][id]'
-
-                if id_key in request.form and quantity_key in request.form:
-                    fixed_cost = {
-                        'id': int(request.form.get(id_key)),
-                        'quantity': Decimal(request.form.get(quantity_key).replace(',', '.'))
-                    }
-                    products[product_index]['fixed_costs'].append(fixed_cost)
-
+        # Trata os produtos
         for prod in products:
             if prod['id']:
-                # Produto já existente, atualiza
                 product = Product.query.get(prod['id'])
+                # Produto já existente, atualiza
                 if product:
                     product.name = prod['name']
-                    product.price = calculate_unit_price(prod)
+                    product.profit_percentage = prod['profit_percentage'] # salva a porcentagem de lucro
+
+                    category = Category.query.get(int(category_id))
+                    days_production = category.days_production
+
+                    product.price = calculate_unit_price(prod, days_production) # envia o produto com seus atributos e os dias de produção da categoria
+                    product.price_total = (product.price * (Decimal('1.00') + prod['profit_percentage'] / Decimal('100.00'))).quantize(Decimal('0.01')) # preço final de custo do produto com base na porcentagem de lucro
                 else:
                     continue  # se o id não for encontrado, pula
 
@@ -213,31 +218,20 @@ def register_product():
                     if restr_id not in current_restr_ids:
                         db.session.delete(existing_restr[restr_id])
 
-                # Atualiza/insere custos fixos
-                existing_fc = {
-                    fc.fixed_cost_id: fc for fc in getattr(product, 'fixed_costs', [])
-                }
-
-                for fc in prod['fixed_costs']:
-                    if fc['id'] in existing_fc:
-                        existing_fc[fc['id']].quantity_used = fc['quantity']
-                    else:
-                        new_fc = ProductFixedCost(
-                            product_id=product.id,
-                            fixed_cost_id=fc['id'],
-                            quantity_used=fc['quantity']
-                        )
-                        db.session.add(new_fc)
-
-                # Remove custos fixos que não vieram no form
-                current_fc_ids = [fc['id'] for fc in prod['fixed_costs']]
-                for fc_id in list(existing_fc):
-                    if fc_id not in current_fc_ids:
-                        db.session.delete(existing_fc[fc_id])
 
             else:
+                category = Category.query.get(int(category_id))
+                days_production = category.days_production
+
+                base_cost = calculate_unit_price(prod, days_production)
+
                 # Novo produto
-                product = Product(name=prod['name'], price=calculate_unit_price(prod))
+                product = Product(
+                    name=prod['name'],
+                    profit_percentage=prod['profit_percentage'],
+                    price=base_cost,
+                    price_total=(base_cost * (Decimal('1.00') + prod['profit_percentage'] / Decimal('100.00'))).quantize(Decimal('0.01'))
+                )
                 db.session.add(product)
                 db.session.flush()
                 product_ids.add(product.id)
@@ -250,9 +244,7 @@ def register_product():
                     )
                     db.session.add(new_pr)
 
-        # Remover produtos que não vieram no form (filtrando por categoria)
-        category_id = request.form.get('category_id_prod')
-
+        # Para excluir os que não vieram
         existing_products = Product.query.join(ProductRestriction).join(Restriction).filter(
             Restriction.category_id == category_id
         ).all()
@@ -311,6 +303,8 @@ def get_all_data_categories():
                 'id': prod.id,
                 'name': prod.name,
                 'price': float(prod.price),
+                'price_total': float(prod.price_total),
+                'profit_percentage': float(prod.profit_percentage),
                 'restrictions': [
                     {
                         'id': pr.restriction_id,
@@ -322,46 +316,49 @@ def get_all_data_categories():
                 ]
             })
 
-        # Custos fixos da categoria
-        fixed_costs = FixedCost.query.filter_by().all()
-
-        fixed_cost_list = [
-            {
-                'id': fc.id,
-                'name': fc.name,
-                'unit_type': fc.unit_type,
-                'quantity_available': float(fc.quantity_available),
-                'unit_price': float(fc.unit_price)
-            }
-            for fc in fixed_costs
-        ]
         # Atribui no dicionário
         category_dict['products'] = product_list
-        category_dict['fixed_costs'] = fixed_cost_list
 
         result.append(category_dict)
 
     return result or []
 
-def calculate_unit_price(prod):
-    total = Decimal('0.00')
+def calculate_unit_price(prod, days_production):
+    restrictions_cost = Decimal('0.00')
+    max_possible_product = None
 
+    # 1. Custo dos insumos e cálculo da quantidade máxima de produtos possíveis
     for r in prod.get('restrictions', []):
         restr = Restriction.query.get(r['id'])
         if restr and restr.unit_price is not None:
-            try:
-                price = Decimal(str(restr.unit_price))
-                total += r['quantity'] * price
-            except Exception as e:
-                print(f"Erro ao calcular restrição {r['id']}: {e}")
+            unit_price = Decimal(str(restr.unit_price))
+            quantity_used = r['quantity']
+            restrictions_cost += unit_price * quantity_used
 
-    for fc in prod.get('fixed_costs', []):
-        cost = FixedCost.query.get(fc['id'])
-        if cost and cost.unit_price is not None:
-            try:
-                price = Decimal(str(cost.unit_price))
-                total += fc['quantity'] * price
-            except Exception as e:
-                print(f"Erro ao calcular custo fixo {fc['id']}: {e}")
+            # Calcular a quantidade máxima de produtos possíveis com esse insumo
+            if quantity_used > 0:
+                possible = restr.quantity_available / quantity_used
+                if max_possible_product is None:
+                    max_possible_product = possible
+                else:
+                    max_possible_product = min(max_possible_product, possible)
 
-    return round(total, 2)
+    # Garante que não tenha divisão por zero
+    if not max_possible_product or max_possible_product == 0:
+        max_possible_product = Decimal('1.00')
+
+    # 2. Custo fixo proporcional ao tempo de produção e quantidade de produtos
+    total_fixed_cost = Decimal('0.00')
+    fixed_costs = FixedCost.query.all()
+    for fc in fixed_costs:
+        mensal = Decimal(str(fc.price_month))
+        diario = mensal / Decimal('30')
+        proporcional = diario * Decimal(str(days_production))
+        total_fixed_cost += proporcional
+
+    unit_fixed_cost = total_fixed_cost / max_possible_product
+
+    # 3. Soma tudo
+    total_cost = (restrictions_cost + unit_fixed_cost).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+    return total_cost
