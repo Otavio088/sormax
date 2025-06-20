@@ -7,4 +7,13 @@ class Result(db.Model):
     gross_profit = db.Column(db.Numeric(12, 2), nullable=False)
     net_profit = db.Column(db.Numeric(12, 2), nullable=False)
 
-    user = db.relationship('Account', backref='results', lazy='select')
+    result_products = db.relationship('ResultProduct', backref='result', lazy='select')
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "gross_profit": float(self.gross_profit),
+            "net_profit": float(self.net_profit),
+            "products": [rp.to_json() for rp in self.result_products]
+        }

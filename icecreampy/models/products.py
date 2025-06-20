@@ -5,6 +5,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
+    price_total = db.Column(db.Numeric(10, 2))
     profit_percentage = db.Column(db.Numeric(5, 2), nullable=False)
 
     restrictions = db.relationship(
@@ -19,6 +20,7 @@ class Product(db.Model):
             "id": self.id,
             "name": self.name,
             "price": self.price,
+            "price_total": self.price_total,
             "profit_percentage": self.profit_percentage,
             "restrictions": [
                 { **pr.to_json(), **{ "name": pr.restriction.name,

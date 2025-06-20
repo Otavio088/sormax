@@ -10,16 +10,13 @@ class ResultProduct(db.Model):
     total_var_cost = db.Column(db.Numeric(12, 2), nullable=False)
     total_fixed_cost = db.Column(db.Numeric(12, 2), nullable=False)
 
-    result = db.relationship('Result', backref='result_products', lazy='select')
-    product = db.relationship('Product', backref='result_products', lazy='select')
-
     def to_json(self):
         return {
             "id": self.id,
-            "product_id": self.id_product,
-            "product_name": self.product.name,  # se o relacionamento for mapeado
+            "product_id": self.product_id,
+            "product_name": self.product.name,
             "quantity_production": self.quantity_production,
-            "total_value": self.total_value,
-            "total_var_cost": self.total_var_cost,
-            "total_fixed_cost": self.total_fixed_cost
+            "total_value": float(self.total_value),
+            "total_var_cost": float(self.total_var_cost),
+            "total_fixed_cost": float(self.total_fixed_cost)
         }
