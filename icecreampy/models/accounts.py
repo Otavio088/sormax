@@ -6,3 +6,5 @@ class Account(db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), nullable=False)
+
+    results = db.relationship('Result', backref='user', lazy=True)

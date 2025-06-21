@@ -19,7 +19,7 @@ h2 span {
     display: block;
     margin-top: 0.25rem;
 }
-#available-restrictions {
+#available-restrictions, #available-fixed-costs {
     background-color: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
@@ -28,7 +28,7 @@ h2 span {
     font-size: 0.95rem;
     color: #4b5563;
 }
-#available-restrictions strong {
+#available-restrictions strong, #available-fixed-costs strong{
     color: #1d4fbb;
 }
 #products-container {

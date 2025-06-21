@@ -53,7 +53,7 @@
     font-weight: 600;
     color: #1f2937;
 }
-.form-category input[type="text"] {
+.form-category input[type="text"], .form-category input[type="number"] {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 2px solid #bfdbfe;
@@ -64,7 +64,7 @@
     background-color: #f9fafb;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-.form-category input[type="text"]:focus {
+.form-category input[type="text"]:focus, .form-category input[type="number"]:focus {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     background-color: white;

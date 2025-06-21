@@ -11,11 +11,17 @@
     <div class="content">
         <h1>Resultado para Maximização<br>de Lucro</h1>
         <div class="results">
-            <h2>Lucro Máximo: R$ {{ "%.2f"|format(max_profit) }}</h2>
+            <h2>Lucro Máximo: R$ {{ "%.2f"|format(gross_profit) }}</h2>
+            <h2>Lucro Líquido: R$ {{ "%.2f"|format(net_profit) }}</h2>
+            <h3>(Custos fixos: R$ {{ "%.2f"|format(total_fixed_costs) }})</h3>
+            <h3>(Custos variáveis: R$ {{ "%.2f"|format(total_variable_costs) }})</h3><br><br>
+
             <h3>Quantidade para produção:</h3>
             <div class="information">
                 {% for product in products %}
-                    <p>{{ product.name }} (R${{ "%.2f"|format(product.price) }}): {{ product.quantity }} Unidades</p>
+                    <p>
+                        {{ product.name }} (Litro: R${{ "%.2f"|format(product.price) }}): {{ product.quantity }} Litros
+                    </p>
                 {% endfor %}
             </div>
             <h3>Utilização de Insumos:</h3>
@@ -30,7 +36,10 @@
         <div id="chart_restrictions" style="width: 100%; height: 400px; padding-top: 25px;"></div>
 
         <form action="/save" method="POST">
-            <input type="hidden" name="max_profit" value="{{ max_profit }}">
+            <input type="hidden" name="gross_profit" value="{{ gross_profit }}">
+            <input type="hidden" name="net_profit" value="{{ net_profit }}">
+            <input type="hidden" name="total_fixed_costs" value="{{ total_fixed_costs }}">
+            <input type="hidden" name="total_variable_costs" value="{{ total_variable_costs }}">
             {% for product in products %}
                 <input type="hidden" name="products_save[]" value="{{ product.id }}">
                 <input type="hidden" name="quantity_{{ product.id }}" value="{{ product.quantity }}">

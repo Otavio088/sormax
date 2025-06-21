@@ -22,7 +22,7 @@ function openProductModal(category) {
 
   restrictionsList = category.restrictions;
   restrictionsList.forEach(r => {
-    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type}</p>`;
+    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type} - R$ ${r.unit_price} Litro.</p>`;
   });
 
   // Disponibiliza o restrictionsList mesmo se não tiver categoria ou produtos
@@ -50,8 +50,12 @@ function loadProducts(product, index) {
     <input type="hidden" name="products[${index}][id]" value="${product.id}">
     <label>Nome do Produto:</label>
     <input type="text" name="products[${index}][name]" value="${product.name}" required>
-    <label>Preço por unidade:</label>
-    <input type="number" step="0.01" min="0" name="products[${index}][price]" value="${product.price}" required>
+
+    <label>% de Lucro desejado:</label>
+    <input type="number" step="0.01" min="0" name="products[${index}][profit_percentage]" value="${product.profit_percentage || 0}" required>
+
+    <label>Preço por litro:</label>
+    <input type="number" step="0.01" min="0" name="products[${index}][price]" value="${product.price_total}" disabled style="background-color: #e9ecef;">
   `;
 
   product.restrictions.forEach((r, i) => {
@@ -80,8 +84,12 @@ function addProductForm() {
   let inner = `
     <label>Nome do Produto:</label>
     <input type="text" name="products[${productIndex}][name]" required>
-    <label>Preço por unidade:</label>
-    <input type="number" step="0.01" min="0" name="products[${productIndex}][price]" required>
+
+    <label>% de Lucro:</label>
+    <input type="number" step="0.01" min="1" name="products[${productIndex}][profit_percentage]" required>
+
+    <label>Preço por litro:</label>
+    <input type="number" step="0.01" min="0" name="products[${productIndex}][price]" disabled style="background-color: #e9ecef;">
   `;
 
   restrictionsList.forEach((r, i) => {

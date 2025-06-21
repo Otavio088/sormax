@@ -1,8 +1,9 @@
-from flask import Blueprint, flash, render_template, request, session, redirect, url_for
+from flask import Blueprint, flash, render_template, session, redirect
 from icecreampy.ext.database import db
 from icecreampy.models.result import Result
 from icecreampy.models.result_products import ResultProduct
 from icecreampy.models.products import Product
+from icecreampy.models.accounts import Account
 
 bp = Blueprint('consult', __name__)
 
@@ -12,27 +13,31 @@ def consult():
         return redirect('/')
 
     try:
-        results = db.session.query(Result).order_by(Result.id.desc()).all()
+        results = Result.query.order_by(Result.id.desc()).all()
         results_data = []
 
-        for index, result in enumerate(results, start=1):
-            result_products = db.session.query(ResultProduct).filter_by(id_result=result.id).all()
-            product_list = []
+        for result in results:
+            # Busca somente os ResultProducts relacionados a esse resultado
+            result_products = ResultProduct.query.filter_by(result_id=result.id).all()
 
+            product_list = []
             for rp in result_products:
-                product = db.session.get(Product, rp.id_product)
-                if product:
+                if rp.product:  # Já tem relacionamento com Product via backref
                     product_list.append({
-                        'name': product.name,
+                        'name': rp.product.name,
                         'quantity': rp.quantity_production,
                         'total_value': float(rp.total_value)
                     })
 
+            user = Account.query.get(result.user_id)
+
             results_data.append({
                 'id': result.id,
                 'name': f"Resultado",
-                'profit': float(result.result),
-                'products': product_list
+                'gross_profit': float(result.gross_profit),
+                'net_profit': float(result.net_profit),
+                'products': product_list,
+                "username": user.username
             })
 
         return render_template('consult.html', results=results_data)
@@ -52,12 +57,12 @@ def view_result(result_id):
         flash("Resultado não encontrado", "error")
         return redirect('/consult')
 
-    result_products = ResultProduct.query.filter_by(id_result=result.id).all()
+    result_products = ResultProduct.query.filter_by(result_id=result.id).all()
     products_data = []
     product_ids = []
 
     for rp in result_products:
-        product = db.session.get(Product, rp.id_product)
+        product = db.session.get(Product, rp.product_id)
         if product:
             products_data.append({
                 'id': product.id,
@@ -106,13 +111,16 @@ def view_result(result_id):
         'used_restrictions': [float(r['used']) for r in restrictions_data],
         'restriction_units': [r['unit'] for r in restrictions_data],
     }
-    print('chart_data: ', chart_data)
+
     return render_template(
         'result.html',
         products=products_data,
         restriction_units=[r['unit'] for r in restrictions_data],
         restrictions=restrictions_data,
-        max_profit=float(result.result),
+        gross_profit=float(result.gross_profit),
+        net_profit=float(result.net_profit),
+        total_variable_costs=float(result.total_variable_costs),
+        total_fixed_costs=float(result.total_fixed_costs),
         category_name=category.name,
         chart_data=chart_data,
     )
@@ -124,7 +132,7 @@ def delete_result(result_id):
 
     try:
         # Deleta todos os ResultProduct associados
-        ResultProduct.query.filter_by(id_result=result_id).delete()
+        ResultProduct.query.filter_by(result_id=result_id).delete()
         
         # Dleta o Result principal
         result = Result.query.get(result_id)

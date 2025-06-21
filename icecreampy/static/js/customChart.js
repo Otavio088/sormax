@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
             formatter: function () {
                 const total = this.point.y * this.point.price; // Cálculo correto do total
                 return `<b>${this.point.name}</b><br>
-                    <b>Quantidade a produzir:</b> ${this.point.y} unidades<br>
-                    <b>Valor unitário:</b> R$ ${this.point.price.toFixed(2)}<br>
+                    <b>Quantidade a produzir:</b> ${this.point.y} litros<br>
+                    <b>Valor por litro:</b> R$ ${this.point.price.toFixed(2)}<br>
                     <b>Valor total:</b> R$ ${total.toFixed(2)}`;
             }
         },
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.y} unidades'
+                    format: '<b>{point.name}</b>: {point.y} litros'
                 }
             }
         },

@@ -4,6 +4,7 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
+    days_production = db.Column(db.Numeric(10, 2), nullable=False)
 
     restrictions = db.relationship(
         'Restriction', 
@@ -16,5 +17,6 @@ class Category(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "days_production": self.days_production,
             "restrictions": [r.to_json() for r in self.restrictions]
         }

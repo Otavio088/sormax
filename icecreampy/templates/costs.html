@@ -1,0 +1,33 @@
+{% extends "home.html" %}
+
+{% block title %} Custos Fixos {% endblock %}
+
+{% block extra_css_home %}
+    <link rel="stylesheet" href="/static/css/costs.css">
+{% endblock %}
+
+{% block content_home %}
+    <div class="costs-wrapper">
+        <div class="costs-card">
+            <h2 class="costs-title">Cadastro de Custos Fixos Mensais</h2>
+            <form method="POST" action="/costs_save">
+                <div class="fixed-cost-actions">
+                    <button type="button" onclick="addCostField()">+ Adicionar Custo Fixo</button>
+                    <button type="submit">Salvar Custos Fixos</button>
+                </div>
+            <div class="scroll-wrapper">
+                <div id="fixed-costs-container" class="fixed-costs-container">
+                    <!-- Campos serão adicionados aqui -->
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/costsFixed.js"></script>
+    <script>
+        const allCosts = {{ costs | tojson | safe }};
+    </script>
+{% endblock %}
