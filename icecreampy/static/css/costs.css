@@ -1,58 +1,128 @@
-/* Estrutura principal - mantida */
-.costs-wrapper {
-  margin-left: 250px;
-  padding: 2rem;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.costs-card {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  /* REMOVIDO height: calc(100vh - 4rem) */
-  display: flex;
-  flex-direction: column;
-  max-height: 80vh; /* Nova altura máxima */
+  height: 100%;
+  background-color: rgba(255, 255, 0, 0.281); 
+  z-index: 0;
 }
-
-/* Container de scroll - ESSA É A CHAVE DA SOLUÇÃO */
+.costs-wrapper {
+    margin-left: 250px;
+    padding: 2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+.costs-card {
+    background-color: #024796;
+    color: white
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+}
+.costs-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.fixed-cost-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.fixed-cost-actions button {
+    flex: 1 1 auto;
+    min-width: 180px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.fixed-cost-actions button:first-child {
+    background-color: #0000cd;
+    color: white;
+}
+.fixed-cost-actions button:first-child:hover {
+    background-color: #1d4fbb;
+    transform: scale(1.02);
+}
+.fixed-cost-actions button:last-child {
+    background-color: #d6af00;
+    color: white;
+}
+.fixed-cost-actions button:last-child:hover {
+    background-color: #ffe058;
+    transform: scale(1.02);
+}
 .scroll-wrapper {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 200px; /* Altura mínima garantida */
-  max-height: calc(80vh - 200px); /* Ajuste baseado no espaço disponível */
-  border: 1px solid #eee; /* Opcional: visualização da área */
-  margin-top: 1rem;
+   margin-top: 2rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #e5e7eb;
 }
-
-/* Container de campos - ajuste sutil */
 .fixed-costs-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.5rem 0.25rem 2rem 0; /* Espaço extra no fundo */
+    display: flex;
+    flex-direction: column;
 }
-
-/* Melhorias visuais nos campos */
 .fixed-cost-input {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.5rem;
-  background: #f8f9fa;
-  border-radius: 0.5rem;
+    background-color: #f8fafc;
+    border-left: 4px solid #024796;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
 }
-
-/* Barra de scroll mais discreta */
-.scroll-wrapper::-webkit-scrollbar {
-  width: 6px;
+.fixed-cost-input:hover {
+    background-color: #f1f5f9;
 }
-.scroll-wrapper::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+.fixed-cost-input input[type="text"],
+.fixed-cost-input input[type="number"] {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+.fixed-cost-input input:focus {
+    border-color: #024796;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(2, 71, 150, 0.2);
+}
+.fixed-cost-input button {
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
+    color: #ef4444;
+    cursor: pointer;
+    align-self: flex-end;
+    transition: color 0.2s ease;
+}
+.fixed-cost-input button:hover {
+    color: #b91c1c;
 }

@@ -5,7 +5,7 @@ function addCostField(cost = {}) {
 
     div.innerHTML = `
         <input type="hidden" name="id[]" value="${cost.id || ''}">
-        <input name="name[]" class="input-name" placeholder="Nome do custo" value="${cost.name || ''}" required>
+        <input name="name[]" class="input-name" type="text" placeholder="Nome do custo" value="${cost.name || ''}" required>
         <input name="price_month[]" type="number" step="0.01" placeholder="Custo mensal (R$)" value="${cost.price_month || ''}" required>
         <button type="button" onclick="confirmRemove(this)">Remover</button>
     `;
