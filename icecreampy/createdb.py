@@ -1,27 +1,40 @@
-import mysql.connector
+# create_db.py
+
 import os
+import pymysql
 from flask import Flask
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 from icecreampy.ext.database import db, init_app
-import icecreampy.models  # importa todos os modelos para registrar
+import icecreampy.models  # Garante que os modelos sejam registrados
 
-load_dotenv()  # Carrega as variáveis do .env
+load_dotenv()  # Carrega variáveis do .env
 
 def create_database():
-    db_uri = os.getenv('DATABASE_URI')
-    db_name = db_uri.split('/')[-1].split('?')[0]
+    db_uri = os.getenv("DATABASE_URI")
+    parsed = urlparse(db_uri)
 
-    connection = mysql.connector.connect(
-        host='localhost',
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD')
+    user = parsed.username
+    password = parsed.password
+    host = parsed.hostname or "localhost"
+    db_name = parsed.path.lstrip('/')  # Remove barra inicial
+
+    # Conecta ao MySQL sem banco selecionado
+    connection = pymysql.connect(
+        host=host,
+        user=user,
+        password=password,
+        charset='utf8mb4',
+        autocommit=True  # Garante que o CREATE DATABASE seja salvo
     )
-    cursor = connection.cursor()
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
-    print(f"Banco de dados '{db_name}' criado/verificado com sucesso.")
-    cursor.close()
-    connection.close()
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
+            print(f"Banco de dados '{db_name}' criado com sucesso.")
+    finally:
+        connection.close()
 
 def create_tables():
     app = Flask(__name__)
