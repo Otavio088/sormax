@@ -22,7 +22,7 @@ function openProductModal(category) {
 
   restrictionsList = category.restrictions;
   restrictionsList.forEach(r => {
-    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type} - R$ ${r.unit_price} Litro.</p>`;
+    availableRestrictions.innerHTML += `<p><strong>${r.name}</strong>: ${r.quantity_available} ${r.unit_type} - R$ ${r.unit_price} o ${r.unit_type}.</p>`;
   });
 
   // Disponibiliza o restrictionsList mesmo se não tiver categoria ou produtos
