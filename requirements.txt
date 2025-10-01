@@ -3,3 +3,4 @@ flask_sqlalchemy
 pymysql
 python-dotenv
 pulp
+cryptography
