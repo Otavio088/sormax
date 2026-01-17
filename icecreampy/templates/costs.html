@@ -28,6 +28,7 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/static/js/menu.js"></script>
     <script src="/static/js/costsFixed.js"></script>
     <script>
         const allCosts = {{ costs | tojson | safe }};
