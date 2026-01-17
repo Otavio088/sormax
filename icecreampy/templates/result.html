@@ -63,6 +63,7 @@
         const restrictionUnits = {{ chart_data.restriction_units | tojson }};
     </script>
 
-     <script src="https://code.highcharts.com/highcharts.js"></script>
-     <script src="{{ url_for('static', filename='js/customChart.js') }}"></script>
+    <script src="/static/js/menu.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{ url_for('static', filename='js/customChart.js') }}"></script>
 {% endblock %}

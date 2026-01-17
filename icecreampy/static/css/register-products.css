@@ -152,3 +152,10 @@
 #button-add-category:hover {
     background-color: #1d4fbb;
 }
+
+@media screen and (max-width: 700px) {
+    #button-add-category {
+        bottom: 0.1rem;
+        right: 0.1rem;
+    }
+}

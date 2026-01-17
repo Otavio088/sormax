@@ -126,3 +126,9 @@
 .fixed-cost-input button:hover {
     color: #b91c1c;
 }
+
+@media screen and (max-width: 700px) {
+    .costs-wrapper {
+        margin-left: 10px;
+    }
+}

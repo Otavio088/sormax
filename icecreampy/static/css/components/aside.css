@@ -57,3 +57,48 @@ li, form {
     transform: scale(1.01);
     background-color: rgba(194, 10, 10, 0.527);
 }
+
+header {
+    position: absolute;
+    top: 15px;
+    right: 260px;
+    background-color: #024796;
+    border-radius: 5px;
+    display: none;
+    flex-direction: row-reverse;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1;
+}
+
+#menu-header {
+    margin: 20px 53px 20px 10px;
+    cursor: pointer;
+}
+
+.bar {
+    height: 5px;
+    width: 220%;
+    background-color: #fff;
+    display: block;
+    /* transition: 0.3s ease; */
+    margin: 10px;
+}
+
+.change {
+    right: 15px;
+}
+
+.content-show {
+    display: flex;
+}
+
+@media screen and (max-width: 700px) {
+    aside {
+        display: none;
+    }
+
+    header {
+        display: block;
+    }
+}
